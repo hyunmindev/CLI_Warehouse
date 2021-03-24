@@ -1,0 +1,12 @@
+//
+// Created by 정현민 on 2021/03/25.
+//
+
+#ifndef PROJECT_CONTROLLER_WAREHOUSE_CONTROLLER_H_
+#define PROJECT_CONTROLLER_WAREHOUSE_CONTROLLER_H_
+
+class WarehouseController {
+
+};
+
+#endif //PROJECT_CONTROLLER_WAREHOUSE_CONTROLLER_H_

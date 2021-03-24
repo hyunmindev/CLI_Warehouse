@@ -5,11 +5,12 @@
 #ifndef PROJECT__ITEM_H_
 #define PROJECT__ITEM_H_
 
-class Item {
+class ItemModel {
  public:
-  Item();
- private:
+  ItemModel();
 
+ private:
+  int volume_;
 };
 
 #endif //PROJECT__ITEM_H_
