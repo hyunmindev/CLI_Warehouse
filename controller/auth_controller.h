@@ -1,0 +1,12 @@
+//
+// Created by 정현민 on 2021/03/26.
+//
+
+#ifndef PROJECT_CONTROLLER_AUTH_CONTROLLER_H_
+#define PROJECT_CONTROLLER_AUTH_CONTROLLER_H_
+
+class AuthController {
+
+};
+
+#endif //PROJECT_CONTROLLER_AUTH_CONTROLLER_H_
