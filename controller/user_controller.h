@@ -1,0 +1,12 @@
+//
+// Created by 정현민 on 2021/03/26.
+//
+
+#ifndef PROJECT_CONTROLLER_USER_CONTROLLER_H_
+#define PROJECT_CONTROLLER_USER_CONTROLLER_H_
+
+class UserController {
+
+};
+
+#endif //PROJECT_CONTROLLER_USER_CONTROLLER_H_
