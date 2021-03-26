@@ -13,4 +13,4 @@ class ItemModel {
   int volume_;
 };
 
-#endif //PROJECT__ITEM_H_
+#endif //PROJECT_MODEL_ITEM_MODEL_H_

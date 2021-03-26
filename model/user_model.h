@@ -16,4 +16,4 @@ class UserModel {
   std::string password_;
 };
 
-#endif //PROJECT_USER_USER_H_
+#endif //PROJECT_MODEL_USER_MODE_H_
