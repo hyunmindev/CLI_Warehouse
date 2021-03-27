@@ -3,3 +3,13 @@
 //
 
 #include "warehouse_view.h"
+
+WarehouseView::WarehouseView(const std::string &view_title) : View(view_title) {}
+
+void WarehouseView::ProcessCommand(const std::string &string) {
+
+}
+
+void WarehouseView::PrintManual() {
+
+}

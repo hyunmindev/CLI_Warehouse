@@ -5,8 +5,20 @@
 #ifndef PROJECT_VIEW_AUTH_VIEW_H_
 #define PROJECT_VIEW_AUTH_VIEW_H_
 
-class AuthView {
+#include <iostream>
 
+#include "../controller/auth_controller.h"
+#include "view.h"
+
+class AuthView : public View {
+ public:
+  explicit AuthView(const std::string& view_title);
+  ~AuthView();
+  void ProcessCommand(const std::string &string) override;
+  void PrintManual() override;
+
+ private:
+  bool _is_authenticated = false;
 };
 
 #endif //PROJECT_VIEW_AUTH_VIEW_H_
