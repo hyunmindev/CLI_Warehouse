@@ -20,8 +20,8 @@ class View {
   virtual void PrintManual() = 0;
 
  protected:
-  std::string _view_title;
-  bool _is_view_activated = false;
+  std::string view_title_;
+  bool is_view_activated_ = false;
 };
 
 #endif //PROJECT_VIEW_VIEW_H_

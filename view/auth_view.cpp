@@ -17,12 +17,12 @@ void AuthView::ProcessCommand(const std::string &command) {
   } else if (command == "signup") {
     std::cout << "sign up success" << std::endl;
   } else {
-    std::cout << this->_view_title << ": command not found " << command << std::endl;
+    std::cout << this->view_title_ << ": command not found " << command << std::endl;
   }
 }
 
 void AuthView::PrintManual() {
-  std::cout << this->_view_title << "Manual" << std::endl;
+  std::cout << this->view_title_ << "Manual" << std::endl;
   std::cout << "signin [username] [password]" << std::endl;
   std::cout << "signup [username] [password] [confirm password]" << std::endl;
 }

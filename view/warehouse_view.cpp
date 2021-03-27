@@ -12,12 +12,12 @@ void WarehouseView::ProcessCommand(const std::string &command) {
     this->PrintManual();
   } else if (command == "exit") {
     this->DeactivateView();
+  } else if (command == "receive") {
+    std::cout << "receive success" << std::endl;
   } else if (command == "release") {
-
-  } else if (command == "release") {
-
+    std::cout << "release success" << std::endl;
   } else {
-    std::cout << this->_view_title << ": command not found " << command << std::endl;
+    std::cout << this->view_title_ << ": command not found " << command << std::endl;
   }
 }
 

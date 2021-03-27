@@ -18,7 +18,7 @@ class AuthView : public View {
   void PrintManual() override;
 
  private:
-  bool _is_authenticated = false;
+  bool is_authenticated_ = false;
 };
 
 #endif //PROJECT_VIEW_AUTH_VIEW_H_

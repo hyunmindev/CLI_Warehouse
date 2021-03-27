@@ -17,7 +17,7 @@ class WarehouseView : public View {
   void PrintManual() override;
 
  private:
-  int size;
+  int size_;
 };
 
 #endif //PROJECT_VIEW_WAREHOUSE_VIEW_H_

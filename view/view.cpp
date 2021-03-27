@@ -4,21 +4,21 @@
 
 #include "view.h"
 
-View::View(std::string view_title) : _view_title(std::move(view_title)) {
-  std::cout << _view_title << " view class constructed" << std::endl;
+View::View(std::string view_title) : view_title_(std::move(view_title)) {
+  std::cout << view_title_ << " view class constructed" << std::endl;
 }
 
 View::~View() {
-  std::cout << _view_title << " view class destructed" << std::endl;
+  std::cout << view_title_ << " view class destructed" << std::endl;
 }
 
 void View::ActivateView() {
-  this->_is_view_activated = true;
+  this->is_view_activated_ = true;
 
 }
 
 void View::DeactivateView() {
-  this->_is_view_activated = false;
+  this->is_view_activated_ = false;
 }
 
 void View::Input() {
@@ -27,7 +27,7 @@ void View::Input() {
 }
 
 std::string View::GetCommand() {
-  std::cout << this->_view_title << " >> ";
+  std::cout << this->view_title_ << " >> ";
   std::string input_string;
   std::cin >> input_string;
   return input_string;
@@ -38,7 +38,7 @@ void View::ProcessCommand(const std::string &string) {
 }
 
 bool View::GetIsViewActivated() const {
-  return _is_view_activated;
+  return is_view_activated_;
 }
 
 
