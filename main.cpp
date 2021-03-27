@@ -20,9 +20,9 @@ int main() {
       std::cin >> input;
       if (input == "0") {
         return 0;
-      } else if (input == "1") {
+      } else if (input == "1" || input == auth_view_title) {
         auth_view.ActivateView();
-      } else if (input == "2") {
+      } else if (input == "2" || input == warehouse_view_title) {
         warehouse_view.ActivateView();
       } else {
         std::cout << "Error: Wrong input" << std::endl;

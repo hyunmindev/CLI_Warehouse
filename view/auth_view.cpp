@@ -5,18 +5,17 @@
 #include "auth_view.h"
 
 AuthView::AuthView(const std::string &view_title) : View(view_title) {}
-
 AuthView::~AuthView() = default;
 
 void AuthView::ProcessCommand(const std::string &command) {
   if (command == "help") {
     this->PrintManual();
+  } else if (command == "exit") {
+    this->DeactivateView();
   } else if (command == "signin") {
     std::cout << "sign in success" << std::endl;
   } else if (command == "signup") {
     std::cout << "sign up success" << std::endl;
-  } else if (command == "exit") {
-    this->DeactivateView();
   } else {
     std::cout << this->_view_title << ": command not found " << command << std::endl;
   }

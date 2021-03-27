@@ -14,7 +14,7 @@ class View {
   void ActivateView();
   void DeactivateView();
   void Input();
-  bool GetIsViewActivated() const;
+  [[nodiscard]] bool GetIsViewActivated() const;
   std::string GetCommand();
   virtual void ProcessCommand(const std::string &string);
   virtual void PrintManual() = 0;

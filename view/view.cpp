@@ -27,7 +27,7 @@ void View::Input() {
 }
 
 std::string View::GetCommand() {
-  std::cout << this->_view_title << ": >> ";
+  std::cout << this->_view_title << " >> ";
   std::string input_string;
   std::cin >> input_string;
   return input_string;
