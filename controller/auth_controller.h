@@ -20,8 +20,8 @@ class AuthController {
   bool GetIsValidateUser() const;
   void SetIsValidateUser();
  private:
-  bool is_validateUser;
-  std::vector<std::string> userInformation;
+  bool is_validate_user_;
+  std::vector<std::string> user_informations_;
 };
 
 #endif //PROJECT_CONTROLLER_AUTH_CONTROLLER_H_

@@ -7,29 +7,27 @@
 AuthController::AuthController() = default;
 AuthController::~AuthController() = default;
 
-std::vector<std::string> split(std::string userInformation, char delimiter) {
-  std::vector<std::string> subStringVector;
-  std::stringstream ss(userInformation);
+std::vector<std::string> Split(std::string user_information, char delimiter) {
+  std::vector<std::string> sub_strings;
+  std::stringstream ss(user_information);
   std::string temp;
-
   while (getline(ss, temp, delimiter)) {
     if (!temp.empty()) {
-      subStringVector.push_back(temp);
+      sub_strings.push_back(temp);
     }
   }
-
-  return subStringVector;
+  return sub_strings;
 }
 
-bool compareUserFile(std::string &username, std::string &password) {    //name 수정해야됨
-  std::ifstream userFile;
-  userFile.open("../user.txt");
+bool CompareUserFile(std::string &username, std::string &password) {    //name 수정해야됨
+  std::ifstream user_file;
+  user_file.open("../user.txt");
   std::string line;
-  if (userFile.is_open()) {
-    while (!userFile.eof()) {
-      getline(userFile, line);
-      std::vector<std::string> linePair = split(line, ' ');
-      if (username == linePair[0] && password == linePair[1]) {
+  if (user_file.is_open()) {
+    while (!user_file.eof()) {
+      getline(user_file, line);
+      std::vector<std::string> line_pair = Split(line, ' ');
+      if (username == line_pair[0] && password == line_pair[1]) {
         return true;
       }
     }
@@ -38,40 +36,40 @@ bool compareUserFile(std::string &username, std::string &password) {    //name �
 }
 
 void AuthController::SetUserInformation() {
-  std::string bufferString;
-  getline(std::cin, bufferString);
-  this->userInformation = split(bufferString, ' ');
+  std::string buffer_string;
+  getline(std::cin, buffer_string);
+  this->user_informations_ = Split(buffer_string, ' ');
 }
 
 void AuthController::SingInEvent() {
   this->SetUserInformation();
   std::string username, password;
-  if (this->userInformation.empty()) {
+  if (this->user_informations_.empty()) {
     std::cout << "username과 password를 입력해주세요." << std::endl;
     std::cout << "username>>";
     std::cin >> username;
     std::cout << "password>>";
     std::cin >> password;
-  } else if (this->userInformation.size() == 1) {
+  } else if (this->user_informations_.size() == 1) {
     std::cout << "password를 입력해주세요. //여기서 간편로그인 기능을 신청한 유저라면 로그인 가능 여부 확인" << std::endl;
     std::cout << "password>>";
     std::cin >> password;
   }
   if (!username.empty()) {
-    this->userInformation.push_back(username);
+    this->user_informations_.push_back(username);
   }
   if (!password.empty()) {
-    this->userInformation.push_back(password);
+    this->user_informations_.push_back(password);
   }
   SetIsValidateUser();
 }
 
 void AuthController::SetIsValidateUser() {
-  this->is_validateUser = compareUserFile(this->userInformation[0], this->userInformation[1]);
+  this->is_validate_user_ = CompareUserFile(this->user_informations_[0], this->user_informations_[1]);
 }
 
 bool AuthController::GetIsValidateUser() const {
-  return this->is_validateUser;
+  return this->is_validate_user_;
 }
 
 void AuthController::UpdateUserModel() {
