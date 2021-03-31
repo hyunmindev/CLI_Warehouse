@@ -13,7 +13,7 @@ class WarehouseView : public View {
  public:
   explicit WarehouseView(const std::string &view_title);
   ~WarehouseView();
-  void ProcessCommand(const std::string &command) override;
+  void ProcessCommand(const std::vector<std::string> &string) override;
   void PrintManual() override;
 };
 

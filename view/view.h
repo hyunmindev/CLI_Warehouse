@@ -7,6 +7,8 @@
 
 #include <iostream>
 
+#include "../string_processor.h"
+
 class View {
  public:
   explicit View(std::string view_title);
@@ -15,8 +17,8 @@ class View {
   void DeactivateView();
   void Input();
   [[nodiscard]] bool GetIsViewActivated() const;
-  std::string GetCommand();
-  virtual void ProcessCommand(const std::string &string);
+  std::vector<std::string> GetInput();
+  virtual void ProcessCommand(const std::vector<std::string> &string) = 0;
   virtual void PrintManual() = 0;
 
  protected:

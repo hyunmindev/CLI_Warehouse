@@ -5,16 +5,15 @@
 #include "view.h"
 
 View::View(std::string view_title) : view_title_(std::move(view_title)) {
-  std::cout << view_title_ << " view class constructed" << std::endl;
+//  std::cout << view_title_ << " view class constructed" << std::endl;
 }
 
 View::~View() {
-  std::cout << view_title_ << " view class destructed" << std::endl;
+//  std::cout << view_title_ << " view class destructed" << std::endl;
 }
 
 void View::ActivateView() {
   this->is_view_activated_ = true;
-
 }
 
 void View::DeactivateView() {
@@ -22,23 +21,19 @@ void View::DeactivateView() {
 }
 
 void View::Input() {
-  std::string command = this->GetCommand();
-  this->ProcessCommand(command);
+  std::vector<std::string> inputs = this->GetInput();
+  // signin test test
+  this->ProcessCommand(inputs);
 }
 
-std::string View::GetCommand() {
+std::vector<std::string> View::GetInput() {
   std::cout << this->view_title_ << " >> ";
   std::string input_string;
-  std::cin >> input_string;
-  return input_string;
-}
-
-void View::ProcessCommand(const std::string &string) {
-
+  std::getline(std::cin, input_string, '\n');
+  std::vector<std::string> inputs = StringProcessor::SplitString(input_string);
+  return inputs;
 }
 
 bool View::GetIsViewActivated() const {
   return is_view_activated_;
 }
-
-

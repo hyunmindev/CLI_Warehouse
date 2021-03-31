@@ -7,26 +7,30 @@
 AuthView::AuthView(const std::string &view_title) : View(view_title) {}
 AuthView::~AuthView() = default;
 
-AuthController auth_controller;
-
-void AuthView::ProcessCommand(const std::string &command) {
+void AuthView::ProcessCommand(const std::vector<std::string> &inputs) {
+  std::string command = inputs[0];
   if (command == "help") {
     this->PrintManual();
   } else if (command == "exit") {
     this->DeactivateView();
   } else if (command == "signin") {
-    auth_controller.SingInEvent();
-    if (auth_controller.GetIsValidateUser()) {
-      std::cout << "sign in success" << std::endl;
+    std::string username = inputs[1];
+    std::string password = inputs[2];
+    if (username.empty() || password.empty()) {
+      std::cout << "필요한 입력인자가 부족합니다. 도움말(help)을 확인해주세요." << std::endl;
     } else {
-      std::cout << "sign in Failed" << std::endl;
+      this->auth_controller_.SingIn(username, password);
+      if (this->auth_controller_.getCurrentUser() != nullptr) {
+        std::cout << "sign in failed" << std::endl;
+      } else {
+        std::cout << "sign in success" << std::endl;
+      }
     }
   } else if (command == "signup") {
-    std::cout << "sign up success" << std::endl;
+    // TODO
   } else {
     std::cout << this->view_title_ << ": command not found " << command << std::endl;
   }
-  fflush(stdin);
 }
 
 void AuthView::PrintManual() {

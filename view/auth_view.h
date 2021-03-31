@@ -14,8 +14,11 @@ class AuthView : public View {
  public:
   explicit AuthView(const std::string& view_title);
   ~AuthView();
-  void ProcessCommand(const std::string &string) override;
+  void ProcessCommand(const std::vector<std::string> &string) override;
   void PrintManual() override;
+
+ private:
+  AuthController auth_controller_;
 };
 
 #endif //PROJECT_VIEW_AUTH_VIEW_H_

@@ -6,22 +6,23 @@
 #define PROJECT_CONTROLLER_AUTH_CONTROLLER_H_
 
 #include <iostream>
-#include <sstream>
 #include <fstream>
 #include <vector>
+#include <algorithm>
+
+#include "../model/user_model.h"
 
 class AuthController {
  public:
   explicit AuthController();
   ~AuthController();
-  void SingInEvent();
-  void UpdateUserModel();
-  void SetUserInformation();
-  bool GetIsValidateUser() const;
-  void SetIsValidateUser();
+  void ReadUsers();
+  void SingIn(const std::string &username, const std::string &password);
+  UserModel *getCurrentUser();
+
  private:
-  bool is_validate_user_;
-  std::vector<std::string> user_informations_;
+  UserModel *current_user_;
+  std::vector<UserModel> users_;
 };
 
 #endif //PROJECT_CONTROLLER_AUTH_CONTROLLER_H_
