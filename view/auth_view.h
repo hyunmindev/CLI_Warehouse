@@ -16,9 +16,6 @@ class AuthView : public View {
   ~AuthView();
   void ProcessCommand(const std::string &string) override;
   void PrintManual() override;
-
- private:
-  bool is_authenticated_ = false;
 };
 
 #endif //PROJECT_VIEW_AUTH_VIEW_H_

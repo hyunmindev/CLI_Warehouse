@@ -30,7 +30,7 @@ void AuthView::ProcessCommand(const std::string &command) {
 }
 
 void AuthView::PrintManual() {
-  std::cout << this->view_title_ << "Manual" << std::endl;
+  std::cout << this->view_title_ << " Manual" << std::endl;
   std::cout << "signin [username] [password]" << std::endl;
   std::cout << "signup [username] [password] [confirm password]" << std::endl;
 }

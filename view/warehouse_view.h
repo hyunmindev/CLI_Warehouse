@@ -15,9 +15,6 @@ class WarehouseView : public View {
   ~WarehouseView();
   void ProcessCommand(const std::string &command) override;
   void PrintManual() override;
-
- private:
-  int size_;
 };
 
 #endif //PROJECT_VIEW_WAREHOUSE_VIEW_H_
