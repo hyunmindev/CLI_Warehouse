@@ -1,5 +1,6 @@
 #include "view/auth_view.h"
 #include "view/warehouse_view.h"
+#include <iostream>
 
 int main() {
   std::string auth_view_title = "Auth";
