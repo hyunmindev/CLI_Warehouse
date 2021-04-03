@@ -1,5 +1,8 @@
+#include <functional>
+
 #include "view/auth_view.h"
 #include "view/warehouse_view.h"
+#include "global/error_handler.h"
 
 void PrintManual() {
 //  std::cout << "0: Exit" << std::endl;
@@ -7,31 +10,59 @@ void PrintManual() {
 //  std::cout << "2: " << warehouse_view_title << std::endl;
 }
 
+std::vector<std::string> GetInputs() {
+  std::string input;
+  std::cout << ">> ";
+  std::getline(std::cin, input, '\n');
+  std::vector<std::string> inputs = StringProcessor::SplitString(input);
+  return inputs;
+}
+
+void ProcessInput(const std::vector<std::string> &inputs,
+                  const std::function<void()> &on_open_auth,
+                  const std::function<void()> &on_open_warehouse,
+                  const std::function<void()> &on_help) {
+  if (inputs.size() > 2) {
+    ErrorHandler::PrintError(TOO_MANY_ARGUMENT);
+    return;
+  }
+  std::string command = inputs[0];
+  if (command == "open") {
+    if (inputs[1] == "auth") {
+      on_open_auth();
+    } else if (inputs[1] == "warehouse") {
+      on_open_warehouse();
+    } else {
+      ErrorHandler::PrintError(WRONG_ARGUMENT);
+    }
+  } else if (command == "help") {
+    on_help();
+  } else {
+    ErrorHandler::PrintError(WRONG_COMMAND);
+  }
+}
+
 int main() {
-  std::string auth_view_title = "Auth";
-  std::string warehouse_view_title = "Warehouse";
-  AuthView auth_view(auth_view_title);
-  WarehouseView warehouse_view(warehouse_view_title);
-  PrintManual();
+  AuthView auth_view("Auth");
+  WarehouseView warehouse_view("Warehouse");
+//  PrintManual();
   while (true) {
     if (auth_view.GetIsViewActivated()) {
-      auth_view.Input();
+      auth_view.Interact();
     } else if (warehouse_view.GetIsViewActivated()) {
-      warehouse_view.Input();
+      warehouse_view.Interact();
     } else {
-      std::cout << ">> ";
-      std::string input;
-      std::cin >> input;
-      std::cin.ignore();
-      if (input == "0") {
-        return 0;
-      } else if (input == "1" || input == auth_view_title) {
-        auth_view.ActivateView();
-      } else if (input == "2" || input == warehouse_view_title) {
-        warehouse_view.ActivateView();
-      } else {
-        std::cout << "Error: Wrong input" << std::endl;
+      std::vector<std::string> inputs = GetInputs();
+      if (inputs[0] == "exit") {
+        break;
       }
+      ProcessInput(inputs, [&auth_view] {
+        auth_view.ActivateView(); // on open auth
+      }, [&warehouse_view] {
+        warehouse_view.ActivateView(); // on open warehouse
+      }, [] { // on help
+        PrintManual();
+      });
     }
   }
 }

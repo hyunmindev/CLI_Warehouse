@@ -13,6 +13,8 @@ class StringProcessor {
  public:
   static std::vector<std::string> SplitString(const std::string &original_string,
                                               char delimiter = ' ');
+ private:
+  StringProcessor();
 };
 
 #endif //PROJECT__STRING_PROCESSOR_H_

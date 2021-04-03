@@ -16,3 +16,5 @@ std::vector<std::string> StringProcessor::SplitString(const std::string &origina
   }
   return sub_strings;
 }
+
+StringProcessor::StringProcessor() = default;

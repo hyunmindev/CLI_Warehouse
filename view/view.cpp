@@ -20,17 +20,16 @@ void View::DeactivateView() {
   this->is_view_activated_ = false;
 }
 
-void View::Input() {
-  std::vector<std::string> inputs = this->GetInput();
-  // signin test test
-  this->ProcessCommand(inputs);
+void View::Interact() {
+  std::vector<std::string> inputs = this->GetInputs();
+  this->ProcessInput(inputs);
 }
 
-std::vector<std::string> View::GetInput() {
+std::vector<std::string> View::GetInputs() {
   std::cout << this->view_title_ << " >> ";
-  std::string input_string;
-  std::getline(std::cin, input_string, '\n');
-  std::vector<std::string> inputs = StringProcessor::SplitString(input_string);
+  std::string input;
+  std::getline(std::cin, input, '\n');
+  std::vector<std::string> inputs = StringProcessor::SplitString(input);
   return inputs;
 }
 
