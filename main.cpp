@@ -5,9 +5,10 @@
 #include "global/error_handler.h"
 
 void PrintManual() {
-//  std::cout << "0: Exit" << std::endl;
-//  std::cout << "1: " << auth_view_title << std::endl;
-//  std::cout << "2: " << warehouse_view_title << std::endl;
+  std::cout << ">> exit" << std::endl;
+  std::cout << "program exit command." << std::endl;
+  std::cout << ">> open [MODE]" << std::endl;
+  std::cout << "open Mode command. Available mode : auth, warehouse" << std::endl;
 }
 
 std::vector<std::string> GetInputs() {
@@ -45,7 +46,7 @@ void ProcessInput(const std::vector<std::string> &inputs,
 int main() {
   AuthView auth_view("Auth");
   WarehouseView warehouse_view("Warehouse");
-//  PrintManual();
+  PrintManual();
   while (true) {
     if (auth_view.GetIsViewActivated()) {
       auth_view.Interact();
