@@ -22,7 +22,7 @@ void View::DeactivateView() {
 
 void View::Interact() {
   std::vector<std::string> inputs = this->GetInputs();
-  this->ProcessInput(inputs);
+  this->ProcessInputs(inputs);
 }
 
 std::vector<std::string> View::GetInputs() {

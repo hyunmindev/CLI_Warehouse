@@ -18,7 +18,7 @@ class View {
   void Interact();
   [[nodiscard]] bool GetIsViewActivated() const;
   std::vector<std::string> GetInputs();
-  virtual void ProcessInput(const std::vector<std::string> &string) = 0;
+  virtual void ProcessInputs(const std::vector<std::string> &string) = 0;
   virtual void PrintManual() = 0;
 
  protected:

@@ -7,7 +7,7 @@
 AuthView::AuthView(const std::string &view_title) : View(view_title) {}
 AuthView::~AuthView() = default;
 
-void AuthView::ProcessInput(const std::vector<std::string> &inputs) {
+void AuthView::ProcessInputs(const std::vector<std::string> &inputs) {
   std::string command = inputs[0];
   if (command == "help") {
     this->PrintManual();
