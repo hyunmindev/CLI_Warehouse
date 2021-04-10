@@ -45,5 +45,5 @@ void WarehouseModel::SetAcceptableVolume(int acceptable_volume) {
 }
 
 bool WarehouseModel::CheckWeightRange(int weight) {
-  return this->allow_min_weight_ <= weight && this->allow_max_weight_ >= weight;
+  return this->allow_min_weight_ <= weight && this->allow_max_weight_ > weight;
 }

@@ -7,26 +7,29 @@
 
 #include <string>
 
+typedef enum{
+  관리자,
+  직원,
+  일반
+}Authority;
+
 class UserModel {
  public:
-  UserModel(std::string username, std::string password, std::string authority);
+  UserModel(std::string username, std::string password, Authority authority);
   ~UserModel();
-  bool CheckAdministratorAuthority(std::string authority);
-  bool CheckEmployeeAuthority(std::string authority);
-  bool CheckNormalAuthority(std::string authority);
   bool operator==(const UserModel &user) {
     return this->username_ == user.username_ && this->password_ == user.password_;
   }
-  const std::string &GetAuthority() const;
-  void SetAuthority(const std::string &authority);
   const std::string &GetUsername() const;
   const std::string &GetPassword() const;
+  Authority GetAuthority() const;
   void SetUsername(const std::string &username);
   void SetPassword(const std::string &password);
+  void SetAuthority(Authority authority);
  private:
   std::string username_;
   std::string password_;
-  std::string authority_;
+  Authority authority_;
 };
 
 #endif //PROJECT_MODEL_USER_MODE_H_

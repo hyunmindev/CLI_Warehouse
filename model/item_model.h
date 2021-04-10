@@ -19,7 +19,6 @@ class ItemModel {
   int GetWeight() const;
   void SetVolume(int volume);
   void SetWeight(int weight);
-  virtual ~ItemModel();
  private:
   const std::string identifier_;
   int volume_;
