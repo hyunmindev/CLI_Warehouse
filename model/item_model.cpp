@@ -3,6 +3,26 @@
 //
 
 #include "item_model.h"
-ItemModel::ItemModel() {
+ItemModel::ItemModel(std::string identifier, int volume, int weight)
+    : identifier_(std::move(identifier)), volume_(volume), weight_(weight) {
+}
 
+const std::string &ItemModel::GetIdentifier() const {
+  return identifier_;
+}
+
+int ItemModel::GetVolume() const {
+  return volume_;
+}
+
+int ItemModel::GetWeight() const {
+  return weight_;
+}
+
+void ItemModel::SetVolume(int volume) {
+  volume_ = volume;
+}
+
+void ItemModel::SetWeight(int weight) {
+  weight_ = weight;
 }

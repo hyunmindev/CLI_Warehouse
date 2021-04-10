@@ -10,6 +10,10 @@
 class UserModel {
  public:
   UserModel(std::string username, std::string password);
+  std::string GetUsername();
+  std::string GetPassword();
+  void SetUsername(std::string username);
+  void SetPassword(std::string password);
   bool operator==(const UserModel &user) {
     return this->username_ == user.username_ && this->password_ == user.password_;
   }
