@@ -7,6 +7,8 @@ ItemModel::ItemModel(std::string identifier, int volume, int weight)
     : identifier_(std::move(identifier)), volume_(volume), weight_(weight) {
 }
 
+ItemModel::~ItemModel() = default;
+
 const std::string &ItemModel::GetIdentifier() const {
   return identifier_;
 }

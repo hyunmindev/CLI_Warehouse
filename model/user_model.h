@@ -10,6 +10,7 @@
 class UserModel {
  public:
   UserModel(std::string username, std::string password);
+  ~UserModel();
   std::string GetUsername();
   std::string GetPassword();
   void SetUsername(std::string username);

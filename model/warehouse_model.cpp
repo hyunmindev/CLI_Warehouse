@@ -14,6 +14,8 @@ WarehouseModel::WarehouseModel(std::string identifier,
       acceptable_volume(acceptable_volume) {
 }
 
+WarehouseModel::~WarehouseModel() = default;
+
 const std::string &WarehouseModel::GetIdentifier() const {
   return identifier_;
 }

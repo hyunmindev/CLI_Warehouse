@@ -9,6 +9,8 @@ UserModel::UserModel(std::string username, std::string password)
     : username_(std::move(username)), password_(std::move(password)) {
 }
 
+UserModel::~UserModel() = default;
+
 std::string UserModel::GetUsername() {
   return this->username_;
 }

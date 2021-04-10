@@ -10,6 +10,7 @@
 class WarehouseModel {
  public:
   WarehouseModel(std::string identifier, int allow_min_weight, int allow_max_weight, int acceptable_volume);
+  ~WarehouseModel();
   bool operator==(WarehouseModel &warehouse) {
     return this->identifier_ == warehouse.identifier_;
   }
