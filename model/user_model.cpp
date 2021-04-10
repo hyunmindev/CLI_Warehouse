@@ -13,24 +13,28 @@ UserModel::UserModel(std::string username, std::string password, std::string aut
 
 UserModel::~UserModel() = default;
 
-std::string UserModel::GetUsername() {
-  return this->username_;
+const std::string &UserModel::GetUsername() const {
+  return username_;
 }
 
-std::string UserModel::GetPassword() {
-  return this->password_;
-}
-
-void UserModel::SetUsername(std::string username) {
-  this->username_ = username;
-}
-
-void UserModel::SetPassword(std::string password) {
-  this->password_ = password;
+const std::string &UserModel::GetPassword() const {
+  return password_;
 }
 
 const std::string &UserModel::GetAuthority() const {
   return authority_;
+}
+
+void UserModel::SetUsername(const std::string &username) {
+  username_ = username;
+}
+
+void UserModel::SetPassword(const std::string &password) {
+  password_ = password;
+}
+
+void UserModel::SetAuthority(const std::string &authority) {
+  authority_ = authority;
 }
 
 bool UserModel::CheckAdministratorAuthority(std::string authority) {
@@ -42,5 +46,5 @@ bool UserModel::CheckEmployeeAuthority(std::string authority) {
 }
 
 bool UserModel::CheckNormalAuthority(std::string authority) {
-  return authority == "일반"
+  return authority == "일반";
 }

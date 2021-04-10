@@ -11,10 +11,6 @@ class UserModel {
  public:
   UserModel(std::string username, std::string password, std::string authority);
   ~UserModel();
-  std::string GetUsername();
-  std::string GetPassword();
-  void SetUsername(std::string username);
-  void SetPassword(std::string password);
   bool CheckAdministratorAuthority(std::string authority);
   bool CheckEmployeeAuthority(std::string authority);
   bool CheckNormalAuthority(std::string authority);
@@ -22,6 +18,11 @@ class UserModel {
     return this->username_ == user.username_ && this->password_ == user.password_;
   }
   const std::string &GetAuthority() const;
+  void SetAuthority(const std::string &authority);
+  const std::string &GetUsername() const;
+  const std::string &GetPassword() const;
+  void SetUsername(const std::string &username);
+  void SetPassword(const std::string &password);
  private:
   std::string username_;
   std::string password_;
