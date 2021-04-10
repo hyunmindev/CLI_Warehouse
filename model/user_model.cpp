@@ -5,6 +5,7 @@
 #include "user_model.h"
 
 #include <utility>
+
 UserModel::UserModel(std::string username, std::string password, Authority authority = Authority::일반)
     : username_(std::move(username)), password_(std::move(password)), authority_(authority) {
 }
