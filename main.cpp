@@ -5,10 +5,12 @@
 #include "global/error_handler.h"
 
 void PrintManual() {
+  std::cout << "================ Manual ==============" << std::endl;
   std::cout << ">> exit" << std::endl;
-  std::cout << "program exit command." << std::endl;
+  std::cout << "  : program exit command." << std::endl;
   std::cout << ">> open [MODE]" << std::endl;
-  std::cout << "open Mode command. Available mode : auth, warehouse" << std::endl;
+  std::cout << "  : open Mode command. Available mode : auth, warehouse" << std::endl;
+  std::cout << "======================================" << std::endl;
 }
 
 std::vector<std::string> GetInputs() {
