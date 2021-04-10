@@ -9,18 +9,23 @@
 
 class UserModel {
  public:
-  UserModel(std::string username, std::string password);
+  UserModel(std::string username, std::string password, std::string authority);
   ~UserModel();
   std::string GetUsername();
   std::string GetPassword();
   void SetUsername(std::string username);
   void SetPassword(std::string password);
+  bool CheckAdministratorAuthority(std::string authority);
+  bool CheckEmployeeAuthority(std::string authority);
+  bool CheckNormalAuthority(std::string authority);
   bool operator==(const UserModel &user) {
     return this->username_ == user.username_ && this->password_ == user.password_;
   }
+  const std::string &GetAuthority() const;
  private:
   std::string username_;
   std::string password_;
+  std::string authority_;
 };
 
 #endif //PROJECT_MODEL_USER_MODE_H_
