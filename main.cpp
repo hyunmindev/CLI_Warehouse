@@ -4,7 +4,7 @@
 #include "view/warehouse_view.h"
 #include "global/error_handler.h"
 
-void PrintManual() {
+void OutputHelp() {
   std::cout << "================ Manual ==============" << std::endl;
   std::cout << ">> exit" << std::endl;
   std::cout << "  : program exit command." << std::endl;
@@ -48,7 +48,7 @@ void ProcessInput(const std::vector<std::string> &inputs,
 int main() {
   AuthView auth_view("Auth");
   WarehouseView warehouse_view("Warehouse");
-  PrintManual();
+  OutputHelp();
   while (true) {
     if (auth_view.GetIsViewActivated()) {
       auth_view.Interact();
@@ -64,7 +64,7 @@ int main() {
       }, [&warehouse_view] {
         warehouse_view.ActivateView(); // on open warehouse
       }, [] { // on help
-        PrintManual();
+        OutputHelp();
       });
     }
   }

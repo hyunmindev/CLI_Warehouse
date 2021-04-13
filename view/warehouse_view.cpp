@@ -9,7 +9,7 @@ WarehouseView::~WarehouseView() = default;
 
 void WarehouseView::ProcessInputs(const std::vector<std::string> &string) {
   if (string[0] == "help") {
-    this->PrintManual();
+    this->OutputHelp();
   } else if (string[0] == "exit") {
     this->DeactivateView();
   } else if (string[0] == "receive") {
@@ -21,6 +21,6 @@ void WarehouseView::ProcessInputs(const std::vector<std::string> &string) {
   }
 }
 
-void WarehouseView::PrintManual() {
+void WarehouseView::OutputHelp() {
 
 }

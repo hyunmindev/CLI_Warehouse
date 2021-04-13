@@ -10,19 +10,22 @@ AuthView::~AuthView() = default;
 void AuthView::ProcessInputs(const std::vector<std::string> &inputs) {
   std::string command = inputs[0];
   if (command == "help") {
-    this->PrintManual();
+    this->OutputHelp();
   } else if (command == "exit") {
     this->DeactivateView();
   } else if (command == "signin") {
     std::string username = inputs[1];
     std::string password = inputs[2];
     if (username.empty() || password.empty()) {
+      // TODO Handle warning, error, notice
       std::cout << "필요한 입력인자가 부족합니다. 도움말(help)을 확인해주세요." << std::endl;
     } else {
       this->auth_controller_.SingIn(username, password);
       if (this->auth_controller_.getCurrentUser() != nullptr) {
+        // TODO Handle warning, error, notice
         std::cout << "sign in failed" << std::endl;
       } else {
+        // TODO Handle warning, error, notice
         std::cout << "sign in success" << std::endl;
       }
     }
@@ -33,7 +36,7 @@ void AuthView::ProcessInputs(const std::vector<std::string> &inputs) {
   }
 }
 
-void AuthView::PrintManual() {
+void AuthView::OutputHelp() {
   std::cout << this->view_title_ << " Manual" << std::endl;
   std::cout << "signin [username] [password]" << std::endl;
   std::cout << "signup [username] [password] [confirm password]" << std::endl;

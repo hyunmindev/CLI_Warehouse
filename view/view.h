@@ -19,7 +19,7 @@ class View {
   [[nodiscard]] bool GetIsViewActivated() const;
   std::vector<std::string> GetInputs();
   virtual void ProcessInputs(const std::vector<std::string> &string) = 0;
-  virtual void PrintManual() = 0;
+  virtual void OutputHelp() = 0;
 
  protected:
   std::string view_title_;

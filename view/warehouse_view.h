@@ -14,7 +14,7 @@ class WarehouseView : public View {
   explicit WarehouseView(const std::string &view_title);
   ~WarehouseView();
   void ProcessInputs(const std::vector<std::string> &string) override;
-  void PrintManual() override;
+  void OutputHelp() override;
 };
 
 #endif //PROJECT_VIEW_WAREHOUSE_VIEW_H_
