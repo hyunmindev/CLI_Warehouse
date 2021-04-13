@@ -14,11 +14,11 @@ class AuthView : public View {
  public:
   explicit AuthView(const std::string &view_title);
   ~AuthView();
-  void ProcessInputs(const std::vector<std::string> &inputs) const override;
+  void ProcessInputs(const std::vector<std::string> &inputs) override;
   void ProcessSignIn() const;
   void ProcessSignUp() const;
   void ProcessChange() const;
-  void OutputHelp() override;
+  void OutputHelp() const override;
 
  private:
   AuthController auth_controller_;

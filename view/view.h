@@ -18,8 +18,8 @@ class View {
   void Interact() const;
   [[nodiscard]] bool GetIsViewActivated() const;
   [[nodiscard]] std::vector<std::string> GetInputs() const;
-  virtual void ProcessInputs(const std::vector<std::string> &string) const = 0;
-  virtual void OutputHelp() = 0;
+  virtual void ProcessInputs(const std::vector<std::string> &string) = 0;
+  virtual void OutputHelp() const = 0;
 
  protected:
   std::string view_title_;

@@ -7,7 +7,7 @@
 AuthView::AuthView(const std::string &view_title) : View(view_title) {}
 AuthView::~AuthView() = default;
 
-void AuthView::ProcessInputs(const std::vector<std::string> &inputs) const {
+void AuthView::ProcessInputs(const std::vector<std::string> &inputs) {
   std::string command = inputs[0];
   if (command == "help") {
     this->OutputHelp();
@@ -37,7 +37,7 @@ void AuthView::ProcessInputs(const std::vector<std::string> &inputs) const {
   }
 }
 
-void AuthView::OutputHelp() {
+void AuthView::OutputHelp() const {
   std::cout << this->view_title_ << " Manual" << std::endl;
   std::cout << "signin [username] [password]" << std::endl;
   std::cout << "signup [username] [password] [confirm password]" << std::endl;

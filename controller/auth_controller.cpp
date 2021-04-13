@@ -30,7 +30,7 @@ void AuthController::SingOut() {
   this->current_user_ = nullptr;
 }
 
-UserModel *AuthController::getCurrentUser() {
+UserModel *AuthController::getCurrentUser() const {
   return this->current_user_;
 }
 

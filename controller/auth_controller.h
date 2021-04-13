@@ -21,7 +21,7 @@ class AuthController {
   void SingIn(std::string username, std::string password) const;
   void SingUp(std::string username, std::string password) const;
   void SingOut();
-  UserModel *getCurrentUser();
+  [[nodiscard]] UserModel *getCurrentUser() const;
 
  private:
   UserModel *current_user_;
