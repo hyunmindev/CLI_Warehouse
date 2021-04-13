@@ -7,7 +7,7 @@
 AuthView::AuthView(const std::string &view_title) : View(view_title) {}
 AuthView::~AuthView() = default;
 
-void AuthView::ProcessInputs(const std::vector<std::string> &inputs) {
+void AuthView::ProcessInputs(const std::vector<std::string> &inputs) const {
   std::string command = inputs[0];
   if (command == "help") {
     this->OutputHelp();
@@ -31,6 +31,7 @@ void AuthView::ProcessInputs(const std::vector<std::string> &inputs) {
     }
   } else if (command == "signup") {
     // TODO
+
   } else {
     std::cout << this->view_title_ << ": command not found " << command << std::endl;
   }

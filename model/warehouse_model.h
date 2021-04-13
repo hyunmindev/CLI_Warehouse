@@ -9,19 +9,23 @@
 
 class WarehouseModel {
  public:
-  WarehouseModel(std::string identifier, int allow_min_weight, int allow_max_weight, int acceptable_volume);
+  WarehouseModel(std::string identifier,
+                 int allow_min_weight,
+                 int allow_max_weight,
+                 int acceptable_volume);
   ~WarehouseModel();
   bool operator==(WarehouseModel &warehouse) {
     return this->identifier_ == warehouse.identifier_;
   }
-  int GetAllowMaxWeight() const;
-  int GetAcceptableVolume() const;
-  const std::string &GetIdentifier() const;
-  int GetAllowMinWeight() const;
+  [[nodiscard]] int GetAllowMaxWeight() const;
+  [[nodiscard]] int GetAcceptableVolume() const;
+  [[nodiscard]] const std::string &GetIdentifier() const;
+  [[nodiscard]] int GetAllowMinWeight() const;
   void SetAllowMinWeight(int allow_min_weight);
   void SetAllowMaxWeight(int allow_max_weight);
   void SetAcceptableVolume(int acceptable_volume);
   bool CheckWeightRange(int weight);
+
  private:
   const std::string identifier_;
   int allow_min_weight_;

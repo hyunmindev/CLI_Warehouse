@@ -15,10 +15,10 @@ class View {
   ~View();
   void ActivateView();
   void DeactivateView();
-  void Interact();
+  void Interact() const;
   [[nodiscard]] bool GetIsViewActivated() const;
-  std::vector<std::string> GetInputs();
-  virtual void ProcessInputs(const std::vector<std::string> &string) = 0;
+  [[nodiscard]] std::vector<std::string> GetInputs() const;
+  virtual void ProcessInputs(const std::vector<std::string> &string) const = 0;
   virtual void OutputHelp() = 0;
 
  protected:

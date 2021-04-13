@@ -6,8 +6,10 @@
 
 #include <utility>
 
-UserModel::UserModel(std::string username, std::string password, Authority authority = Authority::일반)
-    : username_(std::move(username)), password_(std::move(password)), authority_(authority) {
+UserModel::UserModel(std::string username, std::string password)
+    : username_(std::move(username)),
+      password_(std::move(password)),
+      authority_(Authority::COMMON) {
 }
 
 UserModel::~UserModel() = default;

@@ -17,12 +17,14 @@ class AuthController {
   explicit AuthController();
   ~AuthController();
   void ReadUsers();
-  void SingIn(const std::string &username, const std::string &password);
+  void FindUser(const UserModel& user) const;
+  void SingIn(std::string username, std::string password) const;
+  void SingUp(std::string username, std::string password) const;
+  void SingOut();
   UserModel *getCurrentUser();
 
  private:
   UserModel *current_user_;
-  std::vector<UserModel> users_;
 };
 
 #endif //PROJECT_CONTROLLER_AUTH_CONTROLLER_H_

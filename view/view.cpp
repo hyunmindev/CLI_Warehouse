@@ -20,12 +20,12 @@ void View::DeactivateView() {
   this->is_view_activated_ = false;
 }
 
-void View::Interact() {
+void View::Interact() const {
   std::vector<std::string> inputs = this->GetInputs();
   this->ProcessInputs(inputs);
 }
 
-std::vector<std::string> View::GetInputs() {
+std::vector<std::string> View::GetInputs() const {
   std::cout << this->view_title_ << " >> ";
   std::string input;
   std::getline(std::cin, input, '\n');
