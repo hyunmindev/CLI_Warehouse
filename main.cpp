@@ -2,14 +2,14 @@
 
 #include "view/auth_view.h"
 #include "view/warehouse_view.h"
-#include "global/error_handler.h"
+#include "handler/output_handler.h"
 
 void OutputHelp() {
   std::cout << "================ Manual ==============" << std::endl;
   std::cout << ">> exit" << std::endl;
-  std::cout << "  : program exit command." << std::endl;
+  std::cout << "  : Exit program." << std::endl << std::endl;
   std::cout << ">> open [MODE]" << std::endl;
-  std::cout << "  : open Mode command. Available mode : auth, warehouse" << std::endl;
+  std::cout << "  : Open mode. Available mode is auth and warehouse" << std::endl;
   std::cout << "======================================" << std::endl;
 }
 
@@ -17,7 +17,7 @@ std::vector<std::string> GetInputs() {
   std::string input;
   std::cout << ">> ";
   std::getline(std::cin, input, '\n');
-  std::vector<std::string> inputs = StringProcessor::SplitString(input);
+  std::vector<std::string> inputs = StringHandler::SplitString(input);
   return inputs;
 }
 
@@ -26,22 +26,22 @@ void ProcessInput(const std::vector<std::string> &inputs,
                   const std::function<void()> &on_open_warehouse,
                   const std::function<void()> &on_help) {
   if (inputs.size() > 2) {
-    ErrorHandler::PrintError(TOO_MANY_ARGUMENT);
+    OutputHandler::Error(ErrorType::MANY_ARGUMENT);
     return;
   }
-  std::string command = inputs[0];
+  std::string command = inputs.at(0);
   if (command == "open") {
     if (inputs[1] == "auth") {
       on_open_auth();
     } else if (inputs[1] == "warehouse") {
       on_open_warehouse();
     } else {
-      ErrorHandler::PrintError(WRONG_ARGUMENT);
+      OutputHandler::Error(ErrorType::WRONG_ARGUMENT);
     }
   } else if (command == "help") {
     on_help();
   } else {
-    ErrorHandler::PrintError(WRONG_COMMAND);
+    OutputHandler::Error(ErrorType::WRONG_COMMAND);
   }
 }
 
@@ -56,7 +56,11 @@ int main() {
       warehouse_view.Interact();
     } else {
       std::vector<std::string> inputs = GetInputs();
-      if (inputs[0] == "exit") {
+      if (inputs.empty()) {
+        OutputHandler::Error(ErrorType::WRONG_COMMAND);
+        continue;
+      }
+      if (inputs.at(0) == "exit") {
         break;
       }
       ProcessInput(inputs, [&auth_view] {

@@ -9,12 +9,12 @@
 #include <vector>
 #include <sstream>
 
-class StringProcessor {
+class StringHandler {
  public:
   static std::vector<std::string> SplitString(const std::string &original_string,
                                               char delimiter = ' ');
  private:
-  StringProcessor();
+  StringHandler();
 };
 
 #endif //PROJECT__STRING_PROCESSOR_H_

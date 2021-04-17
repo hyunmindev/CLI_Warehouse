@@ -10,14 +10,22 @@
 #include "../controller/auth_controller.h"
 #include "view.h"
 
+enum class AuthErrorType {
+
+};
+
 class AuthView : public View {
  public:
   explicit AuthView(const std::string &view_title);
   ~AuthView();
   void ProcessInputs(const std::vector<std::string> &inputs) override;
-  void ProcessSignIn() const;
-  void ProcessSignUp() const;
+  void ProcessSignIn(const std::string &username, const std::string &password) const;
+  void ProcessSignUp(const std::string &username,
+                     const std::string &password,
+                     const std::string &confirm_password) const;
   void ProcessChange() const;
+  void ProcessPrint() const;
+
   void OutputHelp() const override;
 
  private:

@@ -7,7 +7,8 @@
 
 #include <iostream>
 
-#include "../global/string_processor.h"
+#include "../handler/string_handler.h"
+#include "../handler/output_handler.h"
 
 class View {
  public:
@@ -15,7 +16,7 @@ class View {
   ~View();
   void ActivateView();
   void DeactivateView();
-  void Interact() const;
+  void Interact();
   [[nodiscard]] bool GetIsViewActivated() const;
   [[nodiscard]] std::vector<std::string> GetInputs() const;
   virtual void ProcessInputs(const std::vector<std::string> &string) = 0;

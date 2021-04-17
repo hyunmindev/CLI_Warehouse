@@ -2,10 +2,10 @@
 // Created by 정현민 on 2021/03/31.
 //
 
-#include "string_processor.h"
+#include "string_handler.h"
 
-std::vector<std::string> StringProcessor::SplitString(const std::string &original_string,
-                                                      char delimiter) {
+std::vector<std::string> StringHandler::SplitString(const std::string &original_string,
+                                                    char delimiter) {
   std::vector<std::string> sub_strings;
   std::stringstream string_stream(original_string);
   std::string temp;
@@ -17,4 +17,4 @@ std::vector<std::string> StringProcessor::SplitString(const std::string &origina
   return sub_strings;
 }
 
-StringProcessor::StringProcessor() = default;
+StringHandler::StringHandler() = default;
