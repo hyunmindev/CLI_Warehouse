@@ -10,10 +10,6 @@
 #include "../controller/auth_controller.h"
 #include "view.h"
 
-enum class AuthErrorType {
-
-};
-
 class AuthView : public View {
  public:
   explicit AuthView(const std::string &view_title);

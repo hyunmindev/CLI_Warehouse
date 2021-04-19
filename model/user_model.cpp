@@ -37,3 +37,15 @@ void UserModel::SetPassword(const std::string &password) {
 void UserModel::SetAuthority(Authority authority) {
   authority_ = authority;
 }
+
+Authority UserModel::ConvertStringAuthorityToEnum(const std::string& authority) {
+  if (authority == "manager" || authority == "Manager") {
+    return Authority::Manager;
+  } else if (authority == "staff" || authority == "Staff") {
+    return Authority::STAFF;
+  } else if (authority == "common" || authority == "Common") {
+    return Authority::COMMON;
+  } else {
+    return Authority();
+  }
+}

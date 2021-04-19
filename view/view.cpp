@@ -25,6 +25,18 @@ void View::Interact() {
   this->ProcessInputs(inputs);
 }
 
+bool View::CheckArguments(const std::vector<std::string> &arguments, int begin, int end) {
+  if (arguments.size() < begin) {
+    OutputHandler::Error(ErrorType::FEW_ARGUMENT);
+    return false;
+  } else if (arguments.size() >= end) {
+    OutputHandler::Error(ErrorType::MANY_ARGUMENT);
+    return false;
+  } else {
+    return true;
+  }
+}
+
 std::vector<std::string> View::GetInputs() const {
   std::cout << this->view_title_ << " >> ";
   std::string input;
@@ -36,3 +48,4 @@ std::vector<std::string> View::GetInputs() const {
 bool View::GetIsViewActivated() const {
   return is_view_activated_;
 }
+

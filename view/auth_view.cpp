@@ -8,30 +8,43 @@ AuthView::AuthView(const std::string &view_title) : View(view_title) {}
 AuthView::~AuthView() = default;
 
 void AuthView::ProcessInputs(const std::vector<std::string> &inputs) {
-  std::string command = inputs[0];
+  if (inputs.empty()) {
+    OutputHandler::Error(ErrorType::NO_COMMAND);
+    return;
+  }
+  const std::string command = inputs.at(0);
+  const std::vector<std::string> arguments{inputs.begin() + 1, inputs.end()};
   if (command == "help") {
     this->OutputHelp();
   } else if (command == "exit") {
     this->DeactivateView();
   } else if (command == "signin") {
-    if (inputs.size() < 3) {
-      OutputHandler::Error(ErrorType::FEW_ARGUMENT);
-      return;
-    } else if (inputs.size() > 3) {
-      OutputHandler::Error(ErrorType::MANY_ARGUMENT);
+    if (!View::CheckArguments(arguments, 2, 3)) {
       return;
     }
-    std::string username = inputs.at(1);
-    std::string password = inputs.at(2);
-    std::cout << inputs.size() << std::endl;
-    ProcessSignIn(username, password);
+    std::string username = arguments.at(0);
+    std::string password = arguments.at(1);
+    this->ProcessSignIn(username, password);
   } else if (command == "signup") {
-    std::string username = inputs.at(1);
-    std::string password = inputs.at(2);
-    std::string confirm_password = inputs.at(3);
-    ProcessSignUp(username, password, confirm_password);
+    if (!View::CheckArguments(arguments, 3, 4)) {
+      return;
+    }
+    std::string username = arguments.at(0);
+    std::string password = arguments.at(1);
+    std::string confirm_password = arguments.at(2);
+    this->ProcessSignUp(username, password, confirm_password);
+  } else if (command == "signout") {
+    if (!View::CheckArguments(arguments, 0, 1)) {
+      return;
+    }
+    this->ProcessSignOut();
   } else if (command == "change") {
-    ProcessChange();
+    if (!View::CheckArguments(arguments, 2, 3)) {
+      return;
+    }
+    std::string username = arguments.at(0);
+    std::string authority_string = arguments.at(1);
+    this->ProcessChange(username, UserModel::ConvertStringAuthorityToEnum(authority_string));
   } else {
     OutputHandler::Error(ErrorType::WRONG_COMMAND, command);
   }
@@ -55,11 +68,11 @@ void AuthView::ProcessSignUp(const std::string &username,
 }
 
 void AuthView::ProcessSignOut() {
-
+  this->auth_controller_.SingOut();
 }
 
 void AuthView::ProcessChange(const std::string &username, Authority authority) {
-
+//  this->auth_controller_.Change();
 }
 
 void AuthView::ProcessPrint() const {

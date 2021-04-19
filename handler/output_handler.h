@@ -12,6 +12,7 @@ enum class ErrorType {
   MANY_ARGUMENT,
   FEW_ARGUMENT,
   WRONG_COMMAND,
+  NO_COMMAND,
   WRONG_ARGUMENT
 };
 

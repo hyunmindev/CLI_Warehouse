@@ -21,9 +21,14 @@ void OutputHandler::PrintError(const ErrorType error, const std::string &option)
     case ErrorType::WRONG_ARGUMENT: std::cout << "[Error] Wrong argument";
       break;
     case ErrorType::UNKNOWN: std::cout << "[Error] Unknown error";
+      break;
+    case ErrorType::NO_COMMAND: std::cout << "[Error] No Command";
+      break;
   }
   if (!option.empty()) {
     std::cout << ": " << option << std::endl;
+  } else {
+    std::cout << std::endl;
   }
 }
 

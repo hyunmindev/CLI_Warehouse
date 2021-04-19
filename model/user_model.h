@@ -26,6 +26,7 @@ class UserModel {
   void SetUsername(const std::string &username);
   void SetPassword(const std::string &password);
   void SetAuthority(Authority authority);
+  static Authority ConvertStringAuthorityToEnum(const std::string& authority);
 
  private:
   std::string username_;
