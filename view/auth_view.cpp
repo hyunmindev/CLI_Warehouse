@@ -54,7 +54,15 @@ void AuthView::ProcessSignUp(const std::string &username,
 
 }
 
-void AuthView::ProcessChange() const {
+void AuthView::ProcessSignOut() {
+
+}
+
+void AuthView::ProcessChange(const std::string &username, Authority authority) {
+
+}
+
+void AuthView::ProcessPrint() const {
 
 }
 

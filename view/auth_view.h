@@ -23,7 +23,8 @@ class AuthView : public View {
   void ProcessSignUp(const std::string &username,
                      const std::string &password,
                      const std::string &confirm_password) const;
-  void ProcessChange() const;
+  void ProcessSignOut();
+  void ProcessChange(const std::string &username, Authority authority);
   void ProcessPrint() const;
 
   void OutputHelp() const override;

@@ -26,3 +26,11 @@ void OutputHandler::PrintError(const ErrorType error, const std::string &option)
     std::cout << ": " << option << std::endl;
   }
 }
+
+void OutputHandler::Warning() {
+
+}
+
+void OutputHandler::Success() {
+
+}

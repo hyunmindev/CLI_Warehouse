@@ -18,6 +18,8 @@ enum class ErrorType {
 class OutputHandler {
  public:
   static void Error(ErrorType error_type = ErrorType::UNKNOWN, const std::string &option = "");
+  static void Warning();
+  static void Success();
 
  private:
   OutputHandler();
