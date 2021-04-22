@@ -15,7 +15,7 @@ UserModel::UserModel(std::string username, std::string password)
 UserModel::UserModel(std::string username, std::string password, std::string authority)
     : username_(std::move(username)),
       password_(std::move(password)),
-      authority_(ConvertStringAuthorityToEnum(authority)){
+      authority_(UserModel::ConvertStringAuthorityToEnum(authority)) {
 }
 
 UserModel::~UserModel() = default;
@@ -44,7 +44,7 @@ void UserModel::SetAuthority(Authority authority) {
   authority_ = authority;
 }
 
-Authority UserModel::ConvertStringAuthorityToEnum(const std::string& authority) {
+Authority UserModel::ConvertStringAuthorityToEnum(const std::string &authority) {
   if (authority == "manager" || authority == "Manager") {
     return Authority::Manager;
   } else if (authority == "staff" || authority == "Staff") {
@@ -53,5 +53,15 @@ Authority UserModel::ConvertStringAuthorityToEnum(const std::string& authority) 
     return Authority::COMMON;
   } else {
     return Authority();
+  }
+}
+
+std::string UserModel::ConvertEnumAuthorityToString(const Authority &authority) {
+  if (authority == Authority::Manager) {
+    return "Manager";
+  } else if (authority == Authority::STAFF) {
+    return "Staff";
+  } else {
+    return "Common";
   }
 }

@@ -18,7 +18,7 @@ class UserModel {
   UserModel(std::string username, std::string password);
   UserModel(std::string username, std::string password, std::string authority);
   ~UserModel();
-  bool operator==(const UserModel &user) {
+  bool operator==(const UserModel &user) const {
     return this->username_ == user.username_ && this->password_ == user.password_;
   }
   [[nodiscard]] const std::string &GetUsername() const;
@@ -28,6 +28,7 @@ class UserModel {
   void SetPassword(const std::string &password);
   void SetAuthority(Authority authority);
   static Authority ConvertStringAuthorityToEnum(const std::string &authority);
+  static std::string ConvertEnumAuthorityToString(const Authority &authority);
 
  private:
   std::string username_;

@@ -24,6 +24,12 @@ void OutputHandler::PrintError(const ErrorType error, const std::string &option)
       break;
     case ErrorType::NO_COMMAND: std::cout << "[Error] No Command";
       break;
+    case ErrorType::NO_USER: std::cout << "[Error] 정보에 맞는 이용자가 없습니다.";
+      break;
+    case ErrorType::NOT_MATCH_PASSWORD_CONFIRM_PASSWORD: std::cout << "[Error] not match password and confirm password";
+      break;
+    case ErrorType::IS_HAS_EQUAL_USERNAME: std::cout << "[Error] 이미 동일한 이름으로 가입한 이용자가 존재합니다.";
+      break;
   }
   if (!option.empty()) {
     std::cout << ": " << option << std::endl;

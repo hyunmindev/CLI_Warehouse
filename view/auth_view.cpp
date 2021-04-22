@@ -51,11 +51,9 @@ void AuthView::ProcessInputs(const std::vector<std::string> &inputs) {
   }
 }
 
-void AuthView::ProcessSignIn(const std::string &username, const std::string &password) const {
-  this->auth_controller_.SingIn(username, password);
-  if (this->auth_controller_.getCurrentUser() != nullptr) {
-    // TODO Handle warning, error, notice
-    std::cout << "sign in failed" << std::endl;
+void AuthView::ProcessSignIn(const std::string &username, const std::string &password) {
+  if (this->auth_controller_.SingIn(username, password) == false) {
+    OutputHandler::Error(ErrorType::NO_USER);
   } else {
     // TODO Handle warning, error, notice
     std::cout << "sign in success" << std::endl;
@@ -64,8 +62,17 @@ void AuthView::ProcessSignIn(const std::string &username, const std::string &pas
 
 void AuthView::ProcessSignUp(const std::string &username,
                              const std::string &password,
-                             const std::string &confirm_password) const {
-
+                             const std::string &confirm_password) {
+  if (password != confirm_password) {
+    OutputHandler::Error(ErrorType::NOT_MATCH_PASSWORD_CONFIRM_PASSWORD);
+  } else {
+    if (this->auth_controller_.SingUp(username, password)) {
+      // TODO Handle warning, error, notice
+      std::cout << "sing up success" << std::endl;
+    } else {
+      OutputHandler::Error(ErrorType::IS_HAS_EQUAL_USERNAME);
+    }
+  }
 }
 
 void AuthView::ProcessSignOut() {
