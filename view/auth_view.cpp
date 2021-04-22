@@ -75,7 +75,7 @@ void AuthView::ProcessInputs(const std::vector<std::string> &inputs) {
   }
 }
 
-void AuthView::ProcessSignIn(const std::string &username, const std::string &password) {
+void AuthView::ProcessSignIn(std::string &username, std::string &password) {
   if (!View::CheckUsername(username)) return;
   if (!View::CheckPassword(username, password)) return;
   if (this->auth_controller_.SingIn(username, password) == false) {
@@ -85,8 +85,8 @@ void AuthView::ProcessSignIn(const std::string &username, const std::string &pas
   }
 }
 
-void AuthView::ProcessSignUp(const std::string &username,
-                             const std::string &password,
+void AuthView::ProcessSignUp(std::string &username,
+                             std::string &password,
                              const std::string &confirm_password) {
   if (!View::CheckUsername(username)) return;
   if (!View::CheckPassword(username, password)) return;
@@ -110,8 +110,27 @@ void AuthView::ProcessSignOut() {
   }
 }
 
-void AuthView::ProcessChange(const std::string &username, Authority authority) {
-//  this->auth_controller_.Change();
+void AuthView::ProcessChange(std::string &username, Authority authority) {
+  if (!View::CheckUsername(username)) return;
+  else if (authority == Authority()) {
+    OutputHandler::Error(ErrorType::WRONG_ARGUMENT);
+    return;
+  } else if (this->auth_controller_.getCurrentUser() == nullptr) {
+    OutputHandler::Error(ErrorType::NOT_SIGNED_IN);
+    return;
+  } else if (this->auth_controller_.getCurrentUser()->GetAuthority() == Authority::Manager) {
+    if (authority == Authority::Manager) {
+      OutputHandler::Error(ErrorType::CANNOT_CHANGED_BY_MANAGER);
+      return;
+    }
+    if (this->auth_controller_.Change(username, authority)) {
+      OutputHandler::Success(SuccessType::COMPLETE_CHANGE);
+    } else {
+      OutputHandler::Error(ErrorType::IS_NOT_HAS_EQUAL_USERNAME);
+    }
+  } else {
+    OutputHandler::Error(ErrorType::LACK_OF_AUTHORITY);
+  }
 }
 
 void AuthView::ProcessPrint(const std::string &argument) const {
@@ -140,7 +159,12 @@ void AuthView::ProcessPrint(const std::string &argument) const {
   } else {
     if (current_authority == Authority::Manager) {
       UserModel user(argument, "");
-      user = this->auth_controller_.FindUserUsername(user);
+      int find_index = this->auth_controller_.FindUsernameIndex(user);
+      if(find_index==-1){
+        OutputHandler::Error(ErrorType::IS_NOT_HAS_EQUAL_USERNAME);
+        return;
+      }
+      user = this->auth_controller_.getAllUsers()[find_index];
       std::cout << "[Username: " << user.GetUsername() << "]\t" << "[Password: " << user.GetPassword() << "]\t"
                 << "[Authority: " << UserModel::ConvertEnumAuthorityToString(user.GetAuthority()) << "]" << std::endl;
     } else {

@@ -34,14 +34,15 @@ bool View::CheckUsername(const std::string &username) {
 }
 
 bool View::CheckPassword(const std::string &username, const std::string &password) {
+  std::cout<<password<<std::endl;
   if (password.size() >= 8 && password.size() <= 16 && password.find(username) == std::string::npos) {
     int count = 0;
     bool numberCheck = false;
     bool englishCheck = false;
     bool specialCheck = false;
     for (int i = 0; i < password.size(); ++i) {
-      if (!numberCheck) numberCheck = isdigit(password[i]);
-      if (!englishCheck) numberCheck = isalpha(password[i]);
+      if (!numberCheck) numberCheck = std::isdigit(password[i]);
+      if (!englishCheck) englishCheck = std::isalpha(password[i]);
       if (!specialCheck) {
         if ((password[i] >= 33 && password[i] <= 47) || (password[i] >= 58 && password[i] <= 64)
             || (password[i] >= 91 && password[i] <= 96) || (password[i] > 123 && password[i] <= 126)) {
@@ -52,6 +53,7 @@ bool View::CheckPassword(const std::string &username, const std::string &passwor
     if (numberCheck) count++;
     if (englishCheck) count++;
     if (specialCheck) count++;
+    std::cout<<count<<std::endl;
     if (count >= 2) {
       return true;
     }

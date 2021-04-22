@@ -15,13 +15,13 @@ class AuthView : public View {
   explicit AuthView(const std::string &view_title);
   ~AuthView();
   void ProcessInputs(const std::vector<std::string> &inputs) override;
-  void ProcessSignIn(const std::string &username, const std::string &password);
-  void ProcessSignUp(const std::string &username,
-                     const std::string &password,
+  void ProcessSignIn(std::string &username, std::string &password);
+  void ProcessSignUp(std::string &username,
+                     std::string &password,
                      const std::string &confirm_password);
   void ProcessSignOut();
-  void ProcessChange(const std::string &username, Authority authority);
-  void ProcessPrint(const std::string &argument="") const;
+  void ProcessChange(std::string &username, Authority authority);
+  void ProcessPrint(const std::string &argument = "") const;
 
   void OutputHelp() const override;
 

@@ -26,13 +26,18 @@ void OutputHandler::PrintError(const ErrorType error, const std::string &option)
       break;
     case ErrorType::NO_USER: std::cout << "[Error] 정보에 맞는 이용자가 없습니다.";
       break;
-    case ErrorType::NOT_MATCH_PASSWORD_CONFIRM_PASSWORD: std::cout << "[Error] not match password and confirm password";
+    case ErrorType::NOT_MATCH_PASSWORD_CONFIRM_PASSWORD:
+      std::cout << "[Error] not match password and confirm password.";
       break;
     case ErrorType::IS_HAS_EQUAL_USERNAME: std::cout << "[Error] 이미 동일한 이름으로 가입한 이용자가 존재합니다.";
+      break;
+    case ErrorType::IS_NOT_HAS_EQUAL_USERNAME: std::cout << "[Error] 해당 이름을 사용하는 이용자가 존재하지 않습니다.";
       break;
     case ErrorType::NOT_SIGNED_IN: std::cout << "[Error] not signed in";
       break;
     case ErrorType::LACK_OF_AUTHORITY: std::cout << "[Error] 기능을 사용할 수 없는 권한입니다.";
+      break;
+    case ErrorType::CANNOT_CHANGED_BY_MANAGER: std::cout << "[Error] cannot be changed by manager authority.";
       break;
   }
   if (!option.empty()) {
@@ -53,6 +58,8 @@ void OutputHandler::Success(const SuccessType success) {
     case SuccessType::COMPLETE_SIGNUP: std::cout << "[Notice] complete signup";
       break;
     case SuccessType::COMPLETE_SIGN_OUT: std::cout << "[Notice] complete signout";
+      break;
+    case SuccessType::COMPLETE_CHANGE: std::cout << "[Notice] complete change authority";
       break;
   }
   std::cout << std::endl;

@@ -19,10 +19,12 @@ class AuthController {
   ~AuthController();
   void ReadUsers();
   UserModel FindUser(const UserModel &user) const;
-  UserModel FindUserUsername(const UserModel user) const;
-  bool SingIn(std::string username, std::string password);
-  bool SingUp(std::string username, std::string password);
+  int FindUsernameIndex(const UserModel user) const;
+  UserModel *FindUserUsername(const UserModel user);
+  bool SingIn(std::string &username, std::string &password);
+  bool SingUp(std::string &username, std::string &password);
   void SingOut();
+  bool Change(std::string &username, Authority &authority);
   [[nodiscard]] UserModel *getCurrentUser() const;
   const std::vector<UserModel> &getAllUsers() const;
 
