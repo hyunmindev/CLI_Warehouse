@@ -17,7 +17,8 @@ enum class ErrorType {
   NO_USER,
   NOT_MATCH_PASSWORD_CONFIRM_PASSWORD,
   IS_HAS_EQUAL_USERNAME,
-  NOT_SIGNED_IN
+  NOT_SIGNED_IN,
+  LACK_OF_AUTHORITY
 };
 
 enum class SuccessType {

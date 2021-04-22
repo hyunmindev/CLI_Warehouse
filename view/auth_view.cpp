@@ -24,11 +24,12 @@ void AuthView::ProcessInputs(const std::vector<std::string> &inputs) {
       return;
     }
     std::string mode_type = arguments.at(0);
-    if (View::CheckArguments(arguments, 2, 3)) {
-      std::string argument = arguments.at(1);
+    std::string argument = "";
+    if (arguments.size() == 2) {
+      argument = arguments.at(1);
     }
     if (mode_type == "auth") {
-      this->ProcessPrint();
+      this->ProcessPrint(argument);
     }
   } else if (command == "signin") {
     if (!View::CheckArguments(arguments, 2, 3)) {
@@ -75,6 +76,8 @@ void AuthView::ProcessInputs(const std::vector<std::string> &inputs) {
 }
 
 void AuthView::ProcessSignIn(const std::string &username, const std::string &password) {
+  if (!View::CheckUsername(username)) return;
+  if (!View::CheckPassword(username, password)) return;
   if (this->auth_controller_.SingIn(username, password) == false) {
     OutputHandler::Error(ErrorType::NO_USER);
   } else {
@@ -85,6 +88,8 @@ void AuthView::ProcessSignIn(const std::string &username, const std::string &pas
 void AuthView::ProcessSignUp(const std::string &username,
                              const std::string &password,
                              const std::string &confirm_password) {
+  if (!View::CheckUsername(username)) return;
+  if (!View::CheckPassword(username, password)) return;
   if (password != confirm_password) {
     OutputHandler::Error(ErrorType::NOT_MATCH_PASSWORD_CONFIRM_PASSWORD);
   } else {
@@ -110,32 +115,36 @@ void AuthView::ProcessChange(const std::string &username, Authority authority) {
 }
 
 void AuthView::ProcessPrint(const std::string &argument) const {
-  Authority current_authority = this->auth_controller_.getCurrentUser()->GetAuthority();
-  std::cout << "================ Manual ==============" << std::endl;
-  std::cout << "Username\tPassword\tAuthority" << std::endl;
   if (this->auth_controller_.getCurrentUser() == nullptr) {
     OutputHandler::Error(ErrorType::NOT_SIGNED_IN);
     return;
   }
+  Authority current_authority = this->auth_controller_.getCurrentUser()->GetAuthority();
+  std::cout << "=================== Print Auth ===================" << std::endl;
   if (argument == "") {
     if (current_authority == Authority::Manager) {
       std::vector<UserModel> users = this->auth_controller_.getAllUsers();
       for (int i = 0; i < users.size(); ++i) {
-        std::cout << users[i].GetUsername() << "\t" << users[i].GetPassword() << "\t"
-                  << UserModel::ConvertEnumAuthorityToString(users[i].GetAuthority()) << std::endl;
+        std::cout << "[Username: " << users[i].GetUsername() << "]\t" << "[Password: " << users[i].GetPassword()
+                  << "]\t"
+                  << "[Authority: " << UserModel::ConvertEnumAuthorityToString(users[i].GetAuthority()) << "]"
+                  << std::endl;
       }
     } else {
-      std::cout << this->auth_controller_.getCurrentUser()->GetUsername() << "\t"
-                << this->auth_controller_.getCurrentUser()->GetPassword() << "\t"
+      std::cout << "[Username: " << this->auth_controller_.getCurrentUser()->GetUsername() << "]\t"
+                << "[Password: " << this->auth_controller_.getCurrentUser()->GetPassword() << "]\t"
+                << "[Authority: "
                 << UserModel::ConvertEnumAuthorityToString(this->auth_controller_.getCurrentUser()->GetAuthority())
-                << std::endl;
+                << "]" << std::endl;
     }
   } else {
     if (current_authority == Authority::Manager) {
       UserModel user(argument, "");
       user = this->auth_controller_.FindUserUsername(user);
-      std::cout << user.GetUsername() << "\t" << user.GetPassword() << "\t"
-                << UserModel::ConvertEnumAuthorityToString(user.GetAuthority()) << std::endl;
+      std::cout << "[Username: " << user.GetUsername() << "]\t" << "[Password: " << user.GetPassword() << "]\t"
+                << "[Authority: " << UserModel::ConvertEnumAuthorityToString(user.GetAuthority()) << "]" << std::endl;
+    } else {
+      OutputHandler::Error(ErrorType::LACK_OF_AUTHORITY);
     }
   }
 }

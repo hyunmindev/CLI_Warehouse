@@ -32,6 +32,8 @@ void OutputHandler::PrintError(const ErrorType error, const std::string &option)
       break;
     case ErrorType::NOT_SIGNED_IN: std::cout << "[Error] not signed in";
       break;
+    case ErrorType::LACK_OF_AUTHORITY: std::cout << "[Error] 기능을 사용할 수 없는 권한입니다.";
+      break;
   }
   if (!option.empty()) {
     std::cout << ": " << option << std::endl;
@@ -53,4 +55,5 @@ void OutputHandler::Success(const SuccessType success) {
     case SuccessType::COMPLETE_SIGN_OUT: std::cout << "[Notice] complete signout";
       break;
   }
+  std::cout << std::endl;
 }

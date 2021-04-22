@@ -12,11 +12,6 @@ AuthController::AuthController() : current_user_(nullptr) {
 
 AuthController::~AuthController() = default;
 
-UserModel AuthController::VectorToUserModel(std::vector<std::string> &user_information) {
-  UserModel user(user_information[0], user_information[1], user_information[2]);
-  return user;
-}
-
 void AuthController::ReadUsers() {
   std::ifstream read_auth_file;
   read_auth_file.open("auth.txt"); //file name
@@ -24,17 +19,14 @@ void AuthController::ReadUsers() {
     while (!read_auth_file.eof()) {
       std::string line = "\n";
       getline(read_auth_file, line, '\n');
-      std::cout << line << std::endl;
       if (line.empty()) continue;
       std::vector<std::string> user_information = StringHandler::SplitString(line, '\t');
-      UserModel user(user_information[0], user_information[1], user_information[2]);
+      UserModel
+          user(user_information[0], user_information[1], UserModel::ConvertStringAuthorityToEnum(user_information[2]));
       if (std::find(this->all_users_.begin(), this->all_users_.end(), user) == this->all_users_.end()) {
-        this->all_users_.push_back(this->VectorToUserModel(user_information));
+        this->all_users_.push_back(user);
       }
     }
-  }
-  for (int i = 0; i < this->all_users_.size(); ++i) {
-    std::cout << all_users_[i].GetUsername() << std::endl;
   }
   read_auth_file.close();
 }
@@ -44,7 +36,7 @@ bool AuthController::SingIn(std::string username, std::string password) {
   UserModel user(std::move(username), std::move(password));
   user = this->FindUser(user);
   if (!(user == *this->all_users_.end())) {
-    this->current_user_ = &user;
+    this->current_user_ = new UserModel(user.GetUsername(), user.GetPassword(), user.GetAuthority());
     return true;
   }
   return false;
@@ -83,6 +75,6 @@ UserModel AuthController::FindUserUsername(const UserModel user) const {
   }
   return *this->all_users_.end();
 }
-const std::vector<UserModel> &AuthController::getAllUsers() const{
+const std::vector<UserModel> &AuthController::getAllUsers() const {
   return this->all_users_;
 }

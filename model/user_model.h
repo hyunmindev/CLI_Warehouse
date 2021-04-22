@@ -16,7 +16,7 @@ enum class Authority : char {
 class UserModel {
  public:
   UserModel(std::string username, std::string password);
-  UserModel(std::string username, std::string password, std::string authority);
+  UserModel(std::string username, std::string password, Authority authority);
   ~UserModel();
   bool operator==(const UserModel &user) const {
     return this->username_ == user.username_ && this->password_ == user.password_;

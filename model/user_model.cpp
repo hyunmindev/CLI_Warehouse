@@ -12,10 +12,10 @@ UserModel::UserModel(std::string username, std::string password)
       authority_(Authority::COMMON) {
 }
 
-UserModel::UserModel(std::string username, std::string password, std::string authority)
+UserModel::UserModel(std::string username, std::string password, Authority authority)
     : username_(std::move(username)),
       password_(std::move(password)),
-      authority_(UserModel::ConvertStringAuthorityToEnum(authority)) {
+      authority_(authority) {
 }
 
 UserModel::~UserModel() = default;
