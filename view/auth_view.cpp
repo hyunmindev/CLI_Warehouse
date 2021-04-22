@@ -4,7 +4,8 @@
 
 #include "auth_view.h"
 
-AuthView::AuthView(const std::string &view_title) : View(view_title) {}
+AuthView::AuthView(const std::string &view_title) : View(view_title) {
+}
 AuthView::~AuthView() = default;
 
 void AuthView::ProcessInputs(const std::vector<std::string> &inputs) {

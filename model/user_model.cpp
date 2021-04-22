@@ -12,6 +12,12 @@ UserModel::UserModel(std::string username, std::string password)
       authority_(Authority::COMMON) {
 }
 
+UserModel::UserModel(std::string username, std::string password, std::string authority)
+    : username_(std::move(username)),
+      password_(std::move(password)),
+      authority_(ConvertStringAuthorityToEnum(authority)){
+}
+
 UserModel::~UserModel() = default;
 
 const std::string &UserModel::GetUsername() const {

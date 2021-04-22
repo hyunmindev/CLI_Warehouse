@@ -11,19 +11,22 @@
 #include <algorithm>
 
 #include "../model/user_model.h"
+#include "../handler/string_handler.h"
 
 class AuthController {
  public:
   explicit AuthController();
   ~AuthController();
   void ReadUsers();
-  void FindUser(const UserModel& user) const;
+  void FindUser(const UserModel user) ;
   void SingIn(std::string username, std::string password) const;
   void SingUp(std::string username, std::string password) const;
   void SingOut();
   [[nodiscard]] UserModel *getCurrentUser() const;
+  UserModel VectorToUserModel(std::vector<std::string> &user_information);
 
  private:
+  std::vector<UserModel> all_users_;
   UserModel *current_user_;
 };
 
