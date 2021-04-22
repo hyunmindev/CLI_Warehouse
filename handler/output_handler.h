@@ -16,14 +16,21 @@ enum class ErrorType {
   WRONG_ARGUMENT,
   NO_USER,
   NOT_MATCH_PASSWORD_CONFIRM_PASSWORD,
-  IS_HAS_EQUAL_USERNAME
+  IS_HAS_EQUAL_USERNAME,
+  NOT_SIGNED_IN
+};
+
+enum class SuccessType {
+  COMPLETE_SIGN_IN,
+  COMPLETE_SIGNUP,
+  COMPLETE_SIGN_OUT
 };
 
 class OutputHandler {
  public:
   static void Error(ErrorType error_type = ErrorType::UNKNOWN, const std::string &option = "");
   static void Warning();
-  static void Success();
+  static void Success(SuccessType success_type);
 
  private:
   OutputHandler();

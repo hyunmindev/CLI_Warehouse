@@ -21,7 +21,7 @@ class AuthView : public View {
                      const std::string &confirm_password);
   void ProcessSignOut();
   void ProcessChange(const std::string &username, Authority authority);
-  void ProcessPrint() const;
+  void ProcessPrint(const std::string &argument="") const;
 
   void OutputHelp() const override;
 

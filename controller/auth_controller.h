@@ -24,6 +24,7 @@ class AuthController {
   bool SingUp(std::string username, std::string password);
   void SingOut();
   [[nodiscard]] UserModel *getCurrentUser() const;
+  const std::vector<UserModel> &getAllUsers() const;
   UserModel VectorToUserModel(std::vector<std::string> &user_information);
 
  private:

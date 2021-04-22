@@ -40,6 +40,7 @@ void ProcessInput(const std::vector<std::string> &inputs,
     }
   } else if (command == "help") {
     on_help();
+  } else if (command == "print") {
   } else {
     OutputHandler::Error(ErrorType::WRONG_COMMAND);
   }

@@ -30,6 +30,8 @@ void OutputHandler::PrintError(const ErrorType error, const std::string &option)
       break;
     case ErrorType::IS_HAS_EQUAL_USERNAME: std::cout << "[Error] 이미 동일한 이름으로 가입한 이용자가 존재합니다.";
       break;
+    case ErrorType::NOT_SIGNED_IN: std::cout << "[Error] not signed in";
+      break;
   }
   if (!option.empty()) {
     std::cout << ": " << option << std::endl;
@@ -42,6 +44,13 @@ void OutputHandler::Warning() {
 
 }
 
-void OutputHandler::Success() {
-
+void OutputHandler::Success(const SuccessType success) {
+  switch (success) {
+    case SuccessType::COMPLETE_SIGN_IN: std::cout << "[Notice] complete signin";
+      break;
+    case SuccessType::COMPLETE_SIGNUP: std::cout << "[Notice] complete signup";
+      break;
+    case SuccessType::COMPLETE_SIGN_OUT: std::cout << "[Notice] complete signout";
+      break;
+  }
 }

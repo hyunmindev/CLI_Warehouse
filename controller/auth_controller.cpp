@@ -26,7 +26,7 @@ void AuthController::ReadUsers() {
       getline(read_auth_file, line, '\n');
       std::cout << line << std::endl;
       if (line.empty()) continue;
-      std::vector<std::string> user_information = StringHandler::SplitString(line);
+      std::vector<std::string> user_information = StringHandler::SplitString(line, '\t');
       UserModel user(user_information[0], user_information[1], user_information[2]);
       if (std::find(this->all_users_.begin(), this->all_users_.end(), user) == this->all_users_.end()) {
         this->all_users_.push_back(this->VectorToUserModel(user_information));
@@ -34,7 +34,7 @@ void AuthController::ReadUsers() {
     }
   }
   for (int i = 0; i < this->all_users_.size(); ++i) {
-    std::cout<<all_users_[i].GetUsername()<<std::endl;
+    std::cout << all_users_[i].GetUsername() << std::endl;
   }
   read_auth_file.close();
 }
@@ -82,4 +82,7 @@ UserModel AuthController::FindUserUsername(const UserModel user) const {
     }
   }
   return *this->all_users_.end();
+}
+const std::vector<UserModel> &AuthController::getAllUsers() const{
+  return this->all_users_;
 }
