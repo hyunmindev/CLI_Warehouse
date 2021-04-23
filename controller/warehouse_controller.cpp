@@ -118,6 +118,55 @@ void WarehouseController::ReadWarehouse() {
   read_warehouse_file.close();
 }
 
+bool WarehouseController::IsInWarehouse(const std::string& item_id){
+    std::vector<ItemModel>::iterator it = all_items_.begin();
+    while(it!=all_items_.end()){
+        if(it->GetIdentifier() == item_id)
+            return true;
+    }
+    return false;
+}
+
+bool WarehouseController::ExistWarehouse(const std::string& warehouse_id){
+    std::vector<WarehouseModel>::iterator it = all_warehouses_.begin();
+    while(it!=all_warehouses_.end()){
+        if(it->GetIdentifier() == warehouse_id)
+            return true;
+    }
+    return false;
+}
+
+void WarehouseController::Receive(const std::string& item_id, const std::string& warehouse_id, int count){
+    remove("store_state.txt");
+    std::vector<WarehouseState>::iterator it = warehouse_state_.begin();
+    std::ofstream update_store_state;
+    update_store_state.open("store_state.txt", std::ios::out); //file name
+    if (update_store_state.is_open()) {
+        while (it != warehouse_state_.end()) {
+            std::string temp_warehouse_id = it->warehouse.GetIdentifier();
+            std::vector<std::pair<ItemModel, int>>::iterator iter = it->items_state.begin();
+            while(iter != it->items_state.end()){
+                if(iter->first.GetIdentifier() == item_id){
+                    std::string tmp = temp_warehouse_id + '\t' + iter->first.GetIdentifier() + '\t' +
+                                      StringHandler::IntegerToString(count);
+                    update_store_state.write(tmp.c_str(), tmp.size());
+                }
+                else {
+                    std::string tmp = temp_warehouse_id + '\t' + iter->first.GetIdentifier() + '\t' +
+                                      StringHandler::IntegerToString(iter->second);
+                    update_store_state.write(tmp.c_str(), tmp.size());
+                }
+            }
+
+        }
+    }
+}
+
+
+void WarehouseController::Move(const std::string& item_id, int count){
+
+}
+
 void WarehouseController::ReadFiles() {
   this->ReadItem();
   this->ReadWarehouse();
