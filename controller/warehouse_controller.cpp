@@ -124,20 +124,29 @@ void WarehouseController::ReadFiles() {
   this->ReadStoreState();
 }
 
-void WarehouseController::Release(std::string &identifier, int item_count) {
+bool WarehouseController::Release(std::string &identifier, int item_count) {
   this->ReadFiles();
   int item_index = this->FindItem(identifier);
   if (item_index == -1) {
     OutputHandler::Error(ErrorType::NO_EXISTING_ITEM);
-    return;
+    return false;
   }
   ItemModel item = this->all_items_[item_index];
   std::vector<std::pair<int, int>> warehouse_item_index = FindWarehouseItemIndex(item);
+  int current_item_count = 0;
   for (int i = 0; i < warehouse_item_index.size(); ++i) {
-    std::cout << this->warehouse_state_[warehouse_item_index[i].first].warehouse.GetIdentifier()
-              << this->warehouse_state_[warehouse_item_index[i].first].items_state[warehouse_item_index[i].second].first.GetIdentifier()
+    current_item_count +=
+        this->warehouse_state_[warehouse_item_index[i].first].items_state[warehouse_item_index[i].second].second;
+  }
+  if (current_item_count < item_count) OutputHandler::Error(ErrorType::LACK_ITEM_COUNT);
+  for (int i = 0; i < warehouse_item_index.size(); ++i) {
+    std::cout << "창고: " << this->warehouse_state_[warehouse_item_index[i].first].warehouse.GetIdentifier()
+              << "\t개수: "
+              << this->warehouse_state_[warehouse_item_index[i].first].items_state[warehouse_item_index[i].second].second
               << std::endl;
   }
+  if (current_item_count < item_count) return false;
+  return true; //goto 부프롬프트
 }
 
 std::vector<std::pair<int, int>> WarehouseController::FindWarehouseItemIndex(ItemModel &item) {
