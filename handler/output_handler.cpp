@@ -39,6 +39,10 @@ void OutputHandler::PrintError(const ErrorType error, const std::string &option)
       break;
     case ErrorType::CANNOT_CHANGED_BY_MANAGER: std::cout << "[Error] cannot be changed by manager permission.";
       break;
+    case ErrorType::NO_EXISTING_ITEM: std::cout << "[Error] the item does not exist..";
+      break;
+    case ErrorType::NO_EXISTING_WAREHOUSE: std::cout << "[Error] the warehouse does not exist..";
+      break;
   }
   if (!option.empty()) {
     std::cout << ": " << option << std::endl;

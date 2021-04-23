@@ -15,9 +15,9 @@
 #include "../model/item_model.h"
 #include "../model/warehouse_model.h"
 
-struct WarehouseState{
+struct WarehouseState {
   WarehouseModel warehouse;
-  std::vector<std::pair<ItemModel,int>> items_state;
+  std::vector<std::pair<ItemModel, int>> items_state;
 };
 
 class WarehouseController {
@@ -27,7 +27,11 @@ class WarehouseController {
   void ReadWarehouse();
   void ReadStoreState();
   void ReadItem();
-  void Receive();
+  void ReadFiles();
+  int FindItem(std::string &identifier);
+  int FindWarehouse(std::string &identifier);
+  void Release(std::string &identifier, int item_count);
+  std::vector<std::pair<int, int>> FindWarehouseItemIndex(ItemModel &item);
  private:
   std::vector<WarehouseState> warehouse_state_;
   std::vector<ItemModel> all_items_;

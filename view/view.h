@@ -9,6 +9,8 @@
 
 #include "../handler/string_handler.h"
 #include "../handler/output_handler.h"
+#include "../controller/auth_controller.h"
+#include "../controller/warehouse_controller.h"
 
 class View {
  public:
@@ -26,6 +28,8 @@ class View {
  protected:
   std::string view_title_;
   bool is_view_activated_ = false;
+  AuthController auth_controller_;
+  WarehouseController warehouse_controller_;
 };
 
 #endif //PROJECT_VIEW_VIEW_H_

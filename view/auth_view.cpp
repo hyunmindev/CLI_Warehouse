@@ -136,11 +136,13 @@ void AuthView::ProcessPrint(const std::string &argument) const {
 
 void AuthView::OutputHelp() const {
   std::cout << "================ Manual ==============" << std::endl;
-  std::cout << ">> signin [username] [password]" << std::endl;
+  std::cout << "signin [username] [password]" << std::endl;
   std::cout << "  : 로그인 명령어 입니다." << std::endl << std::endl;
   std::cout << "signup [username] [password] [confirm password]" << std::endl;
   std::cout << "  : 회원가입 명령어 입니다." << std::endl << std::endl;
   std::cout << "change [username] [password] [confirm password]" << std::endl;
   std::cout << "  : 권한 변경 명령어 입니다. (관리자 권한만 사용가능합니다.)" << std::endl;
+  std::cout << "exit" << std::endl;
+  std::cout << "  : 모드 선택모드로 돌아가는 명령어 입니다." << std::endl;
   std::cout << "======================================" << std::endl;
 }

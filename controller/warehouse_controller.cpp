@@ -5,9 +5,7 @@
 #include "warehouse_controller.h"
 
 WarehouseController::WarehouseController() {
-  this->ReadWarehouse();
-  this->ReadItem();
-  this->ReadStoreState();
+  this->ReadFiles();
 }
 
 WarehouseController::~WarehouseController() = default;
@@ -83,14 +81,14 @@ void WarehouseController::ReadStoreState() {
     std::ofstream new_file("store_state.txt");
     new_file.close();
   }
-  for (int i = 0; i < this->warehouse_state_.size(); ++i) {
-    std::cout << warehouse_state_[i].warehouse.GetIdentifier() << ":\n";
-    for (int j = 0; j < warehouse_state_[i].items_state.size(); ++j) {
-      std::cout << warehouse_state_[i].items_state[j].first.GetIdentifier() << warehouse_state_[i].items_state[j].second
-                << "개\t";
-    }
-    std::cout << std::endl;
-  }
+//  for (int i = 0; i < this->warehouse_state_.size(); ++i) {
+//    std::cout << warehouse_state_[i].warehouse.GetIdentifier() << ":\n";
+//    for (int j = 0; j < warehouse_state_[i].items_state.size(); ++j) {
+//      std::cout << warehouse_state_[i].items_state[j].first.GetIdentifier() << warehouse_state_[i].items_state[j].second
+//                << "개\t";
+//    }
+//    std::cout << std::endl;
+//  }
   read_store_state_file.close();
 }
 
@@ -118,4 +116,62 @@ void WarehouseController::ReadWarehouse() {
     new_file.close();
   }
   read_warehouse_file.close();
+}
+
+void WarehouseController::ReadFiles() {
+  this->ReadItem();
+  this->ReadWarehouse();
+  this->ReadStoreState();
+}
+
+void WarehouseController::Release(std::string &identifier, int item_count) {
+  this->ReadFiles();
+  int item_index = this->FindItem(identifier);
+  if (item_index == -1) {
+    OutputHandler::Error(ErrorType::NO_EXISTING_ITEM);
+    return;
+  }
+  ItemModel item = this->all_items_[item_index];
+  std::vector<std::pair<int, int>> warehouse_item_index = FindWarehouseItemIndex(item);
+  for (int i = 0; i < warehouse_item_index.size(); ++i) {
+    std::cout << this->warehouse_state_[warehouse_item_index[i].first].warehouse.GetIdentifier()
+              << this->warehouse_state_[warehouse_item_index[i].first].items_state[warehouse_item_index[i].second].first.GetIdentifier()
+              << std::endl;
+  }
+}
+
+std::vector<std::pair<int, int>> WarehouseController::FindWarehouseItemIndex(ItemModel &item) {
+  std::vector<std::pair<int, int>> index;
+  for (int i = 0; i < this->warehouse_state_.size(); ++i) {
+    for (int j = 0; j < this->warehouse_state_[i].items_state.size(); ++j) {
+      if (this->warehouse_state_[i].items_state[j].first == item) {
+        index.push_back({i, j});
+      }
+    }
+  }
+  return index;
+}
+
+int WarehouseController::FindItem(std::string &identifier) {
+  this->ReadFiles();
+  ItemModel item(std::move(identifier), 0, 0);
+  int index = 0;
+  for (index = 0; index < this->all_items_.size(); ++index) {
+    if (this->all_items_[index] == item) {
+      return index;
+    }
+  }
+  return -1;
+}
+
+int WarehouseController::FindWarehouse(std::string &identifier) {
+  this->ReadFiles();
+  WarehouseModel warehouse(std::move(identifier), 0, 0, 0);
+  int index;
+  for (index = 0; index < this->all_warehouses_.size(); ++index) {
+    if (this->all_warehouses_[index] == warehouse) {
+      return index;
+    }
+  }
+  return -1;
 }

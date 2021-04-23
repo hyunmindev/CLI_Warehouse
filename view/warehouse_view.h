@@ -16,14 +16,13 @@ class WarehouseView : public View {
   ~WarehouseView();
   void ProcessInputs(const std::vector<std::string> &inputs) override;
   void ProcessReceive(const std::string& item_id, int count); // 입고 명령어 처리
-  void ProcessRelease(const std::string& item_id, int count); // 출고 명령어 처리
+  void ProcessRelease(std::string& item_id, int count); // 출고 명령어 처리
   void ProcessMove(const std::string& item_id, int count); // 이동 명령어 처리
   void ProcessPrint(); // 출력 명령어 처리
 
   void OutputHelp() const override;
 
  private:
-  WarehouseController warehouse_controller_;
 };
 
 #endif //PROJECT_VIEW_WAREHOUSE_VIEW_H_

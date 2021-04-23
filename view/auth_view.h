@@ -7,7 +7,6 @@
 
 #include <iostream>
 
-#include "../controller/auth_controller.h"
 #include "view.h"
 
 class AuthView : public View {
@@ -26,7 +25,6 @@ class AuthView : public View {
   void OutputHelp() const override;
 
  private:
-  AuthController auth_controller_;
 };
 
 #endif //PROJECT_VIEW_AUTH_VIEW_H_
