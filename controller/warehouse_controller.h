@@ -25,13 +25,9 @@ class WarehouseController {
   explicit WarehouseController();
   ~WarehouseController();
   void ReadWarehouse();
-  void ReadStoreState();
+  void ReadStoreState(const std::string &identifier);
   void ReadItem();
-  void ReadFiles();
-  int FindItem(std::string &identifier);
-  int FindWarehouse(std::string &identifier);
-  void Release(std::string &identifier, int item_count);
-  std::vector<std::pair<int, int>> FindWarehouseItemIndex(ItemModel &item);
+  void Receive();
  private:
   std::vector<WarehouseState> warehouse_state_;
   std::vector<ItemModel> all_items_;

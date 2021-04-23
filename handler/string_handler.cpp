@@ -25,4 +25,8 @@ int StringHandler::StringToInteger(std::string &original_string) {
   return std::stoi(original_string);
 }
 
+std::string StringHandler::IntegerToString(const int &original_int) {
+    return std::to_string(original_int);
+}
+
 StringHandler::StringHandler() = default;
