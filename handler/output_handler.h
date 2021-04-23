@@ -24,7 +24,7 @@ enum class ErrorType {
   EXISTING_ITEM,
   NO_EXISTING_ITEM,
   NO_EXISTING_WAREHOUSE,
-  LACK_ITEM_COUNT
+  FEW_ITEM_COUNT,
 };
 
 enum class SuccessType {

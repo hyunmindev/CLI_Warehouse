@@ -30,9 +30,7 @@ class WarehouseController {
   void ReadFiles();
   int FindItem(std::string &identifier);
   int FindWarehouse(std::string &identifier);
-  bool Receive(std::string& item_id, std::string& warehouse_id, int count);
   bool Release(std::string &identifier, int item_count);
-  bool Move(std::string& item_id, int count);
   std::vector<std::pair<int, int>> FindWarehouseItemIndex(ItemModel &item);
  private:
   std::vector<WarehouseState> warehouse_state_;
