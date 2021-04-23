@@ -25,43 +25,6 @@ void View::Interact() {
   this->ProcessInputs(inputs);
 }
 
-bool View::CheckUsername(const std::string &username) {
-  if (username.size() < 3) {
-    OutputHandler::Error(ErrorType::WRONG_ARGUMENT);
-    return false;
-  }
-  return true;
-}
-
-bool View::CheckPassword(const std::string &username, const std::string &password) {
-  std::cout<<password<<std::endl;
-  if (password.size() >= 8 && password.size() <= 16 && password.find(username) == std::string::npos) {
-    int count = 0;
-    bool numberCheck = false;
-    bool englishCheck = false;
-    bool specialCheck = false;
-    for (int i = 0; i < password.size(); ++i) {
-      if (!numberCheck) numberCheck = std::isdigit(password[i]);
-      if (!englishCheck) englishCheck = std::isalpha(password[i]);
-      if (!specialCheck) {
-        if ((password[i] >= 33 && password[i] <= 47) || (password[i] >= 58 && password[i] <= 64)
-            || (password[i] >= 91 && password[i] <= 96) || (password[i] > 123 && password[i] <= 126)) {
-          specialCheck = true;
-        }
-      }
-    }
-    if (numberCheck) count++;
-    if (englishCheck) count++;
-    if (specialCheck) count++;
-    std::cout<<count<<std::endl;
-    if (count >= 2) {
-      return true;
-    }
-  }
-  OutputHandler::Error(ErrorType::WRONG_ARGUMENT);
-  return false;
-}
-
 bool View::CheckArguments(const std::vector<std::string> &arguments, int begin, int end) {
   if (arguments.size() < begin) {
     OutputHandler::Error(ErrorType::FEW_ARGUMENT);

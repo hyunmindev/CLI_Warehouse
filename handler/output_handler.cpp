@@ -35,9 +35,9 @@ void OutputHandler::PrintError(const ErrorType error, const std::string &option)
       break;
     case ErrorType::NOT_SIGNED_IN: std::cout << "[Error] not signed in";
       break;
-    case ErrorType::LACK_OF_AUTHORITY: std::cout << "[Error] 기능을 사용할 수 없는 권한입니다.";
+    case ErrorType::PERMISSION_DENIED: std::cout << "[Error] 기능을 사용할 수 없는 권한입니다.";
       break;
-    case ErrorType::CANNOT_CHANGED_BY_MANAGER: std::cout << "[Error] cannot be changed by manager authority.";
+    case ErrorType::CANNOT_CHANGED_BY_MANAGER: std::cout << "[Error] cannot be changed by manager permission.";
       break;
   }
   if (!option.empty()) {
@@ -59,7 +59,7 @@ void OutputHandler::Success(const SuccessType success) {
       break;
     case SuccessType::COMPLETE_SIGN_OUT: std::cout << "[Notice] complete signout";
       break;
-    case SuccessType::COMPLETE_CHANGE: std::cout << "[Notice] complete change authority";
+    case SuccessType::COMPLETE_CHANGE: std::cout << "[Notice] complete change permission";
       break;
   }
   std::cout << std::endl;

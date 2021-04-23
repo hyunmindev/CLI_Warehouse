@@ -9,13 +9,13 @@
 UserModel::UserModel(std::string username, std::string password)
     : username_(std::move(username)),
       password_(std::move(password)),
-      authority_(Authority::COMMON) {
+      permission_(Permission::COMMON) {
 }
 
-UserModel::UserModel(std::string username, std::string password, Authority authority)
+UserModel::UserModel(std::string username, std::string password, Permission permission)
     : username_(std::move(username)),
       password_(std::move(password)),
-      authority_(authority) {
+      permission_(permission) {
 }
 
 UserModel::~UserModel() = default;
@@ -28,8 +28,8 @@ const std::string &UserModel::GetPassword() const {
   return password_;
 }
 
-Authority UserModel::GetAuthority() const {
-  return authority_;
+Permission UserModel::GetPermission() const {
+  return permission_;
 }
 
 void UserModel::SetUsername(const std::string &username) {
@@ -40,26 +40,26 @@ void UserModel::SetPassword(const std::string &password) {
   password_ = password;
 }
 
-void UserModel::SetAuthority(Authority authority) {
-  authority_ = authority;
+void UserModel::SetPermission(Permission permission) {
+  permission_ = permission;
 }
 
-Authority UserModel::ConvertStringAuthorityToEnum(const std::string &authority) {
-  if (authority == "manager" || authority == "Manager") {
-    return Authority::Manager;
-  } else if (authority == "staff" || authority == "Staff") {
-    return Authority::STAFF;
-  } else if (authority == "common" || authority == "Common") {
-    return Authority::COMMON;
+Permission UserModel::ConvertStringPermissionToEnum(const std::string &permission) {
+  if (permission == "manager" || permission == "Manager") {
+    return Permission::Manager;
+  } else if (permission == "staff" || permission == "Staff") {
+    return Permission::STAFF;
+  } else if (permission == "common" || permission == "Common") {
+    return Permission::COMMON;
   } else {
-    return Authority();
+    return Permission();
   }
 }
 
-std::string UserModel::ConvertEnumAuthorityToString(const Authority &authority) {
-  if (authority == Authority::Manager) {
+std::string UserModel::ConvertEnumPermissionToString(const Permission &permission) {
+  if (permission == Permission::Manager) {
     return "Manager";
-  } else if (authority == Authority::STAFF) {
+  } else if (permission == Permission::STAFF) {
     return "Staff";
   } else {
     return "Common";

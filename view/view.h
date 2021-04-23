@@ -21,8 +21,6 @@ class View {
   [[nodiscard]] std::vector<std::string> GetInputs() const;
   virtual void ProcessInputs(const std::vector<std::string> &string) = 0;
   virtual void OutputHelp() const = 0;
-  static bool CheckUsername(const std::string &username);
-  static bool CheckPassword(const std::string &username, const std::string &password);
   static bool CheckArguments(const std::vector<std::string> &arguments, int begin, int end);
 
  protected:

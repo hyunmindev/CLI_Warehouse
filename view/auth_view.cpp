@@ -65,9 +65,9 @@ void AuthView::ProcessInputs(const std::vector<std::string> &inputs) {
       return;
     }
     std::string username = arguments.at(0);
-    std::string authority_string = arguments.at(1);
+    std::string permission_string = arguments.at(1);
     this->
-        ProcessChange(username, UserModel::ConvertStringAuthorityToEnum(authority_string)
+        ProcessChange(username, UserModel::ConvertStringPermissionToEnum(permission_string)
     );
   } else {
     OutputHandler::Error(ErrorType::WRONG_COMMAND, command
@@ -76,61 +76,21 @@ void AuthView::ProcessInputs(const std::vector<std::string> &inputs) {
 }
 
 void AuthView::ProcessSignIn(std::string &username, std::string &password) {
-  if (!View::CheckUsername(username)) return;
-  if (!View::CheckPassword(username, password)) return;
-  if (this->auth_controller_.SingIn(username, password) == false) {
-    OutputHandler::Error(ErrorType::NO_USER);
-  } else {
-    OutputHandler::Success(SuccessType::COMPLETE_SIGN_IN);
-  }
+  this->auth_controller_.SingIn(username, password);
 }
 
 void AuthView::ProcessSignUp(std::string &username,
                              std::string &password,
-                             const std::string &confirm_password) {
-  if (!View::CheckUsername(username)) return;
-  if (!View::CheckPassword(username, password)) return;
-  if (password != confirm_password) {
-    OutputHandler::Error(ErrorType::NOT_MATCH_PASSWORD_CONFIRM_PASSWORD);
-  } else {
-    if (this->auth_controller_.SingUp(username, password)) {
-      OutputHandler::Success(SuccessType::COMPLETE_SIGNUP);
-    } else {
-      OutputHandler::Error(ErrorType::IS_HAS_EQUAL_USERNAME);
-    }
-  }
+                             std::string &confirm_password) {
+  this->auth_controller_.SingUp(username, password, confirm_password);
 }
 
 void AuthView::ProcessSignOut() {
-  if (this->auth_controller_.getCurrentUser() == nullptr) {
-    OutputHandler::Error(ErrorType::NOT_SIGNED_IN);
-  } else {
-    this->auth_controller_.SingOut();
-    OutputHandler::Success(SuccessType::COMPLETE_SIGN_OUT);
-  }
+  this->auth_controller_.SingOut();
 }
 
-void AuthView::ProcessChange(std::string &username, Authority authority) {
-  if (!View::CheckUsername(username)) return;
-  else if (authority == Authority()) {
-    OutputHandler::Error(ErrorType::WRONG_ARGUMENT);
-    return;
-  } else if (this->auth_controller_.getCurrentUser() == nullptr) {
-    OutputHandler::Error(ErrorType::NOT_SIGNED_IN);
-    return;
-  } else if (this->auth_controller_.getCurrentUser()->GetAuthority() == Authority::Manager) {
-    if (authority == Authority::Manager) {
-      OutputHandler::Error(ErrorType::CANNOT_CHANGED_BY_MANAGER);
-      return;
-    }
-    if (this->auth_controller_.Change(username, authority)) {
-      OutputHandler::Success(SuccessType::COMPLETE_CHANGE);
-    } else {
-      OutputHandler::Error(ErrorType::IS_NOT_HAS_EQUAL_USERNAME);
-    }
-  } else {
-    OutputHandler::Error(ErrorType::LACK_OF_AUTHORITY);
-  }
+void AuthView::ProcessChange(std::string &username, Permission permission) {
+  this->auth_controller_.Change(username, permission);
 }
 
 void AuthView::ProcessPrint(const std::string &argument) const {
@@ -138,37 +98,38 @@ void AuthView::ProcessPrint(const std::string &argument) const {
     OutputHandler::Error(ErrorType::NOT_SIGNED_IN);
     return;
   }
-  Authority current_authority = this->auth_controller_.getCurrentUser()->GetAuthority();
+  Permission current_permission = this->auth_controller_.getCurrentUser()->GetPermission();
   std::cout << "=================== Print Auth ===================" << std::endl;
   if (argument == "") {
-    if (current_authority == Authority::Manager) {
+    if (current_permission == Permission::Manager) {
       std::vector<UserModel> users = this->auth_controller_.getAllUsers();
       for (int i = 0; i < users.size(); ++i) {
         std::cout << "[Username: " << users[i].GetUsername() << "]\t" << "[Password: " << users[i].GetPassword()
                   << "]\t"
-                  << "[Authority: " << UserModel::ConvertEnumAuthorityToString(users[i].GetAuthority()) << "]"
+                  << "[Permission: " << UserModel::ConvertEnumPermissionToString(users[i].GetPermission()) << "]"
                   << std::endl;
       }
     } else {
       std::cout << "[Username: " << this->auth_controller_.getCurrentUser()->GetUsername() << "]\t"
                 << "[Password: " << this->auth_controller_.getCurrentUser()->GetPassword() << "]\t"
-                << "[Authority: "
-                << UserModel::ConvertEnumAuthorityToString(this->auth_controller_.getCurrentUser()->GetAuthority())
+                << "[Permission: "
+                << UserModel::ConvertEnumPermissionToString(this->auth_controller_.getCurrentUser()->GetPermission())
                 << "]" << std::endl;
     }
   } else {
-    if (current_authority == Authority::Manager) {
+    if (current_permission == Permission::Manager) {
       UserModel user(argument, "");
       int find_index = this->auth_controller_.FindUsernameIndex(user);
-      if(find_index==-1){
+      if (find_index == -1) {
         OutputHandler::Error(ErrorType::IS_NOT_HAS_EQUAL_USERNAME);
         return;
       }
       user = this->auth_controller_.getAllUsers()[find_index];
       std::cout << "[Username: " << user.GetUsername() << "]\t" << "[Password: " << user.GetPassword() << "]\t"
-                << "[Authority: " << UserModel::ConvertEnumAuthorityToString(user.GetAuthority()) << "]" << std::endl;
+                << "[Permission: " << UserModel::ConvertEnumPermissionToString(user.GetPermission()) << "]"
+                << std::endl;
     } else {
-      OutputHandler::Error(ErrorType::LACK_OF_AUTHORITY);
+      OutputHandler::Error(ErrorType::PERMISSION_DENIED);
     }
   }
 }

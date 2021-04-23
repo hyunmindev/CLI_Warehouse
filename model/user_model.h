@@ -7,7 +7,7 @@
 
 #include <string>
 
-enum class Authority : char {
+enum class Permission : char {
   Manager = 1,
   STAFF,
   COMMON
@@ -16,24 +16,24 @@ enum class Authority : char {
 class UserModel {
  public:
   UserModel(std::string username, std::string password);
-  UserModel(std::string username, std::string password, Authority authority);
+  UserModel(std::string username, std::string password, Permission permission);
   ~UserModel();
   bool operator==(const UserModel &user) const {
     return this->username_ == user.username_ && this->password_ == user.password_;
   }
   [[nodiscard]] const std::string &GetUsername() const;
   [[nodiscard]] const std::string &GetPassword() const;
-  [[nodiscard]] Authority GetAuthority() const;
+  [[nodiscard]] Permission GetPermission() const;
   void SetUsername(const std::string &username);
   void SetPassword(const std::string &password);
-  void SetAuthority(Authority authority);
-  static Authority ConvertStringAuthorityToEnum(const std::string &authority);
-  static std::string ConvertEnumAuthorityToString(const Authority &authority);
+  void SetPermission(Permission permission);
+  static Permission ConvertStringPermissionToEnum(const std::string &permission);
+  static std::string ConvertEnumPermissionToString(const Permission &permission);
 
  private:
   std::string username_;
   std::string password_;
-  Authority authority_;
+  Permission permission_;
 };
 
 #endif //PROJECT_MODEL_USER_MODEL_H_
