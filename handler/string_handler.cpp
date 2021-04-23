@@ -17,4 +17,8 @@ std::vector<std::string> StringHandler::SplitString(const std::string &original_
   return sub_strings;
 }
 
+int StringHandler::StringToInteger(const std::string &original_string) {
+  return std::stoi(original_string);
+}
+
 StringHandler::StringHandler() = default;

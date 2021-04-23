@@ -25,9 +25,13 @@ class WarehouseController {
   explicit WarehouseController();
   ~WarehouseController();
   void ReadWarehouse();
+  void ReadStoreState(const std::string &identifier);
+  void ReadItem();
   void Receive();
  private:
   std::vector<WarehouseState> warehouse_state_;
+  std::vector<ItemModel> all_items_;
+  std::vector<WarehouseModel> all_warehouses_;
 };
 
 #endif //PROJECT_CONTROLLER_WAREHOUSE_CONTROLLER_H_
