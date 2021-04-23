@@ -33,7 +33,7 @@ void WarehouseController::ReadItem() {
   read_item_file.close();
 }
 
-void WarehouseController::ReadStoreState() {
+void WarehouseController::ReadStoreState(const std::string &identifier) {
   std::ifstream read_store_state_file;
   read_store_state_file.open("store_state.txt", std::ios::in); //file name
   if (read_store_state_file.is_open()) {
@@ -118,25 +118,20 @@ void WarehouseController::ReadWarehouse() {
   read_warehouse_file.close();
 }
 
-bool WarehouseController::IsInWarehouse(const std::string& item_id){
-    std::vector<ItemModel>::iterator it = all_items_.begin();
-    while(it!=all_items_.end()){
-        if(it->GetIdentifier() == item_id)
-            return true;
-    }
-    return false;
-}
+bool WarehouseController::Receive(std::string& item_id, std::string& warehouse_id, int count){
+    this->ReadFiles();
+    int item_index = this->FindItem(item_id);
+    if (item_index == -1) {
+        OutputHandler::Error(ErrorType::NO_EXISTING_ITEM);
 
-bool WarehouseController::ExistWarehouse(const std::string& warehouse_id){
-    std::vector<WarehouseModel>::iterator it = all_warehouses_.begin();
-    while(it!=all_warehouses_.end()){
-        if(it->GetIdentifier() == warehouse_id)
-            return true;
-    }
-    return false;
-}
+        //  to do : 부프롬포트로 무게 부피 받기
 
-void WarehouseController::Receive(const std::string& item_id, const std::string& warehouse_id, int count){
+    }else {
+        OutputHandler::Error(ErrorType::EXISTING_ITEM);
+
+        // to do : 부프롬포트로 창고랑 물품 관계 보여기
+
+    }
     remove("store_state.txt");
     std::vector<WarehouseState>::iterator it = warehouse_state_.begin();
     std::ofstream update_store_state;
@@ -163,7 +158,7 @@ void WarehouseController::Receive(const std::string& item_id, const std::string&
 }
 
 
-void WarehouseController::Move(const std::string& item_id, int count){
+bool WarehouseController::Move(std::string& item_id, int count){
 
 }
 
