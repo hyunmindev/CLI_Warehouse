@@ -55,14 +55,14 @@ void WarehouseController::ReadStoreState() {
         if (this->warehouse_state_[i].warehouse == warehouse) {
           bool insert_item = false;
           for (int j = 0; j < this->warehouse_state_[i].items_state.size(); ++j) {
-            if (this->warehouse_state_[i].items_state[j].first == this->all_items_[index]) {
+            if (this->warehouse_state_[i].items_state[j].first == this->all_items_[index].GetIdentifier()) {
               this->warehouse_state_[i].items_state[j].second =
                   StringHandler::StringToInteger(store_state_information[2]);
               insert_item = true;
             }
           }
           if (!insert_item) {
-            this->warehouse_state_[i].items_state.push_back({this->all_items_[index],
+            this->warehouse_state_[i].items_state.push_back({this->all_items_[index].GetIdentifier(),
                                                              StringHandler::StringToInteger(store_state_information[2])});
           }
           insert = true;
@@ -70,8 +70,8 @@ void WarehouseController::ReadStoreState() {
         }
       }
       if (!insert) {
-        std::vector<std::pair<ItemModel, int>> item;
-        item.push_back({this->all_items_[index],
+        std::vector<std::pair<std::string , int>> item;
+        item.push_back({this->all_items_[index].GetIdentifier(),
                         StringHandler::StringToInteger(
                             store_state_information[2])});
         this->warehouse_state_.push_back({warehouse, item});
@@ -118,52 +118,32 @@ void WarehouseController::ReadWarehouse() {
   read_warehouse_file.close();
 }
 
-bool WarehouseController::IsInWarehouse(const std::string& item_id){
-    std::vector<ItemModel>::iterator it = all_items_.begin();
-    while(it!=all_items_.end()){
-        if(it->GetIdentifier() == item_id)
-            return true;
-    }
-    return false;
-}
-
-bool WarehouseController::ExistWarehouse(const std::string& warehouse_id){
-    std::vector<WarehouseModel>::iterator it = all_warehouses_.begin();
-    while(it!=all_warehouses_.end()){
-        if(it->GetIdentifier() == warehouse_id)
-            return true;
-    }
-    return false;
-}
-
-void WarehouseController::Receive(const std::string& item_id, const std::string& warehouse_id, int count){
-    remove("store_state.txt");
-    std::vector<WarehouseState>::iterator it = warehouse_state_.begin();
-    std::ofstream update_store_state;
-    update_store_state.open("store_state.txt", std::ios::out); //file name
-    if (update_store_state.is_open()) {
-        while (it != warehouse_state_.end()) {
-            std::string temp_warehouse_id = it->warehouse.GetIdentifier();
-            std::vector<std::pair<ItemModel, int>>::iterator iter = it->items_state.begin();
-            while(iter != it->items_state.end()){
-                if(iter->first.GetIdentifier() == item_id){
-                    std::string tmp = temp_warehouse_id + '\t' + iter->first.GetIdentifier() + '\t' +
-                                      StringHandler::IntegerToString(count);
-                    update_store_state.write(tmp.c_str(), tmp.size());
-                }
-                else {
-                    std::string tmp = temp_warehouse_id + '\t' + iter->first.GetIdentifier() + '\t' +
-                                      StringHandler::IntegerToString(iter->second);
-                    update_store_state.write(tmp.c_str(), tmp.size());
-                }
-            }
-
+void WarehouseController::Receive(const std::string &item_id, const std::string &warehouse_id, int count) {
+  remove("store_state.txt");
+  std::vector<WarehouseState>::iterator it = warehouse_state_.begin();
+  std::ofstream update_store_state;
+  update_store_state.open("store_state.txt", std::ios::out); //file name
+  if (update_store_state.is_open()) {
+    while (it != warehouse_state_.end()) {
+      std::string temp_warehouse_id = it->warehouse.GetIdentifier();
+      std::vector<std::pair<std::string, int>>::iterator iter = it->items_state.begin();
+      while (iter != it->items_state.end()) {
+        if (iter->first == item_id) {
+          std::string tmp = temp_warehouse_id + '\t' + iter->first + '\t' +
+              StringHandler::IntegerToString(count);
+          update_store_state.write(tmp.c_str(), tmp.size());
+        } else {
+          std::string tmp = temp_warehouse_id + '\t' + iter->first + '\t' +
+              StringHandler::IntegerToString(iter->second);
+          update_store_state.write(tmp.c_str(), tmp.size());
         }
+      }
+
     }
+  }
 }
 
-
-void WarehouseController::Move(const std::string& item_id, int count){
+void WarehouseController::Move(const std::string &item_id, int count) {
 
 }
 
@@ -180,39 +160,82 @@ bool WarehouseController::Release(std::string &identifier, int item_count) {
     OutputHandler::Error(ErrorType::NO_EXISTING_ITEM);
     return false;
   }
-  ItemModel item = this->all_items_[item_index];
-  std::vector<std::pair<int, int>> warehouse_item_index = FindWarehouseItemIndex(item);
-  int current_item_count = 0;
-  for (int i = 0; i < warehouse_item_index.size(); ++i) {
-    current_item_count +=
-        this->warehouse_state_[warehouse_item_index[i].first].items_state[warehouse_item_index[i].second].second;
-  }
-  if (current_item_count < item_count) OutputHandler::Error(ErrorType::LACK_ITEM_COUNT);
-  for (int i = 0; i < warehouse_item_index.size(); ++i) {
-    std::cout << "창고: " << this->warehouse_state_[warehouse_item_index[i].first].warehouse.GetIdentifier()
+  int current_item_count = FindWarehouseItemIndex(identifier);
+  if (current_item_count < item_count) OutputHandler::Error(ErrorType::FEW_ITEM_COUNT);
+  for (int i = 0; i < this->find_item_index_.size(); ++i) {
+    std::cout << "창고: " << this->warehouse_state_[this->find_item_index_[i].first].warehouse.GetIdentifier()
               << "\t개수: "
-              << this->warehouse_state_[warehouse_item_index[i].first].items_state[warehouse_item_index[i].second].second
+              << this->warehouse_state_[this->find_item_index_[i].first].items_state[this->find_item_index_[i].second].second
               << std::endl;
   }
   if (current_item_count < item_count) return false;
+  this->item_count_ = item_count;
   return true; //goto 부프롬프트
 }
 
-std::vector<std::pair<int, int>> WarehouseController::FindWarehouseItemIndex(ItemModel &item) {
-  std::vector<std::pair<int, int>> index;
-  for (int i = 0; i < this->warehouse_state_.size(); ++i) {
-    for (int j = 0; j < this->warehouse_state_[i].items_state.size(); ++j) {
-      if (this->warehouse_state_[i].items_state[j].first == item) {
-        index.push_back({i, j});
+void WarehouseController::ReleaseSubPrompt(std::vector<std::string> &identifiers) {
+  std::vector<std::pair<int, int>> index_item_in_warehouse;
+  bool is_possible = false;
+  for (int i = 0; i < identifiers.size(); ++i) {
+    if(is_possible) break;
+    WarehouseModel warehouse(identifiers[i], 0, 0, 0);
+    for (int j = 0; j < this->find_item_index_.size(); ++j) {
+      if (warehouse_state_[this->find_item_index_[j].first].warehouse == warehouse) {
+        int count =
+            this->warehouse_state_[this->find_item_index_[j].first].items_state[this->find_item_index_[j].second].second;
+
+        index_item_in_warehouse.push_back({this->find_item_index_[j].first, this->find_item_index_[j].second});
+        if (this->item_count_ > count) {
+          this->item_count_ -= count;
+        } else {
+          is_possible = true;
+        }
+        break;
       }
     }
   }
-  return index;
+  if (!is_possible) {
+    OutputHandler::Error(ErrorType::FEW_ITEM_COUNT);
+    return;
+  }
+  for (int i = 0; i < index_item_in_warehouse.size() - 1; ++i) {
+    this->warehouse_state_[index_item_in_warehouse[i].first].items_state.erase(
+        this->warehouse_state_[index_item_in_warehouse[i].first].items_state.begin()
+            + index_item_in_warehouse[i].second);
+  }
+  this->warehouse_state_[index_item_in_warehouse[index_item_in_warehouse.size()
+      - 1].first].items_state[index_item_in_warehouse[index_item_in_warehouse.size() - 1].second].second -=
+      this->item_count_;
+  std::ofstream write_store_state_file("warehouse.txt", std::ios::trunc);
+  for (int i = 0; i < this->warehouse_state_.size(); ++i) {
+    if (i != 0) write_store_state_file << std::endl;
+    for (int j = 0; j < this->warehouse_state_[i].items_state.size(); ++j) {
+      if (j != 0) write_store_state_file << std::endl;
+      write_store_state_file << this->warehouse_state_[i].warehouse.GetIdentifier() << "\t"
+                             << this->warehouse_state_[i].items_state[j].first << "\t"
+                             << this->warehouse_state_[i].items_state[j].second;
+    }
+  }
+  write_store_state_file.close();
+  OutputHandler::Success(SuccessType::COMPLETE_CHANGE);
+}
+
+int WarehouseController::FindWarehouseItemIndex(std::string &item_identifier) {
+  int count = 0;
+  for (int i = 0; i < this->warehouse_state_.size(); ++i) {
+    for (int j = 0; j < this->warehouse_state_[i].items_state.size(); ++j) {
+      if (this->warehouse_state_[i].items_state[j].first == item_identifier) {
+        this->find_item_index_.push_back({i, j});
+        count += this->warehouse_state_[i].items_state[j].second;
+      }
+    }
+  }
+  return count;
 }
 
 int WarehouseController::FindItem(std::string &identifier) {
   this->ReadFiles();
-  ItemModel item(std::move(identifier), 0, 0);
+  ItemModel item(identifier, 0, 0);
   int index = 0;
   for (index = 0; index < this->all_items_.size(); ++index) {
     if (this->all_items_[index] == item) {

@@ -4,7 +4,7 @@
 
 #include "warehouse_view.h"
 
-WarehouseView::WarehouseView(const std::string &view_title) : View(view_title) {}
+WarehouseView::WarehouseView(const std::string &view_title) : View(view_title), prompt_(Prompt::Main) {}
 WarehouseView::~WarehouseView() = default;
 
 void WarehouseView::ProcessInputs(const std::vector<std::string> &inputs) {
@@ -18,27 +18,35 @@ void WarehouseView::ProcessInputs(const std::vector<std::string> &inputs) {
     this->OutputHelp();
   } else if (command == "exit") {
     this->DeactivateView();
-  } else if (command == "receive") { // 입고
+  } else if (command == "receive" && this->prompt_ == Prompt::Main) { // 입고
     if (!View::CheckArguments(arguments, 2, 3)) {
       return;
     }
     std::string item_id = arguments.at(0);
     std::string count_string = arguments.at(1);
     this->ProcessReceive(item_id, std::stoi(count_string));
-  } else if (command == "release") { // 출고
+  } else if (command == "release" && this->prompt_ == Prompt::Main) { // 출고
     if (!View::CheckArguments(arguments, 2, 3)) {
       return;
     }
     std::string item_id = arguments.at(0);
     std::string count_string = arguments.at(1);
     this->ProcessRelease(item_id, std::stoi(count_string));
-  } else if (command == "move") {
+  } else if (command == "move" && this->prompt_ == Prompt::Main) {
     if (!View::CheckArguments(arguments, 2, 3)) {
       return;
     }
     std::string item_id = arguments.at(0);
     std::string count_string = arguments.at(1);
     this->ProcessMove(item_id, std::stoi(count_string));
+  } else if (this->prompt_ == Prompt::WarehouseIdentifiers) {
+    if (command.empty()) {
+      OutputHandler::Error(ErrorType::FEW_ARGUMENT);
+      return;
+    }
+    std::vector<std::string> identifiers = {command};
+    identifiers.insert(identifiers.end(), arguments.begin(), arguments.end());
+    this->ProcessReleaseSubPrompt(identifiers);
   } else {
     OutputHandler::Error(ErrorType::WRONG_COMMAND, command);
   }
@@ -49,11 +57,19 @@ void WarehouseView::ProcessReceive(const std::string &item_id, int count) {
 }
 
 void WarehouseView::ProcessRelease(std::string &item_id, int count) {
-  if(this->auth_controller_.getCurrentUser()== nullptr) {
+  if (this->auth_controller_.getCurrentUser() == nullptr) {
     OutputHandler::Error(ErrorType::NOT_SIGNED_IN);
 //    return;
   }
-  this->warehouse_controller_.Release(item_id, count);
+  if (this->warehouse_controller_.Release(item_id, count)) {
+    std::cout << item_id << std::endl;
+    this->view_title_ = "Warehouse : " + item_id + " : 창고 식별자";
+  }
+  this->prompt_ = Prompt::WarehouseIdentifiers;
+}
+
+void WarehouseView::ProcessReleaseSubPrompt(std::vector<std::string> &identifiers) {
+  this->warehouse_controller_.ReleaseSubPrompt(identifiers);
 }
 
 void WarehouseView::ProcessMove(const std::string &item_id, int count) {

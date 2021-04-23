@@ -43,7 +43,7 @@ void OutputHandler::PrintError(const ErrorType error, const std::string &option)
       break;
     case ErrorType::NO_EXISTING_WAREHOUSE: std::cout << "[Error] the warehouse does not exist.";
       break;
-    case ErrorType::LACK_ITEM_COUNT: std::cout << "[Error] 창고에 해당 물품의 수량이 부족합니다.";
+    case ErrorType::FEW_ITEM_COUNT: std::cout << "[Error] 창고에 해당 물품의 수량이 부족합니다.";
       break;
   }
   if (!option.empty()) {

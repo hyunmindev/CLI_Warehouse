@@ -17,7 +17,7 @@
 
 struct WarehouseState {
   WarehouseModel warehouse;
-  std::vector<std::pair<ItemModel, int>> items_state;
+  std::vector<std::pair<std::string, int>> items_state;
 };
 
 class WarehouseController {
@@ -25,17 +25,22 @@ class WarehouseController {
   explicit WarehouseController();
   ~WarehouseController();
   void ReadWarehouse();
-  void ReadStoreState(const std::string &identifier);
+  void ReadStoreState();
   void ReadItem();
   void ReadFiles();
   int FindItem(std::string &identifier);
   int FindWarehouse(std::string &identifier);
+  void Receive(const std::string &item_id, const std::string &warehouse_id, int count);
   bool Release(std::string &identifier, int item_count);
-  std::vector<std::pair<int, int>> FindWarehouseItemIndex(ItemModel &item);
+  void ReleaseSubPrompt(std::vector<std::string> &identifiers);
+  void Move(const std::string &item_id, int count);
+  int FindWarehouseItemIndex(std::string &item_identifier);
  private:
   std::vector<WarehouseState> warehouse_state_;
   std::vector<ItemModel> all_items_;
   std::vector<WarehouseModel> all_warehouses_;
+  std::vector<std::pair<int, int>> find_item_index_;
+  int item_count_;
 };
 
 #endif //PROJECT_CONTROLLER_WAREHOUSE_CONTROLLER_H_
