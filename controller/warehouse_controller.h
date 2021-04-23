@@ -25,7 +25,7 @@ class WarehouseController {
   explicit WarehouseController();
   ~WarehouseController();
   void ReadWarehouse();
-  void ReadStoreState(const std::string &identifier);
+  void ReadStoreState();
   void ReadItem();
   void Receive();
  private:

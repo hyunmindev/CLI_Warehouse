@@ -14,7 +14,7 @@ class WarehouseModel {
                  int allow_max_weight,
                  int acceptable_volume);
   ~WarehouseModel();
-  bool operator==(WarehouseModel &warehouse) {
+  bool operator==(const WarehouseModel &warehouse) const {
     return this->identifier_ == warehouse.identifier_;
   }
   [[nodiscard]] int GetAllowMaxWeight() const;

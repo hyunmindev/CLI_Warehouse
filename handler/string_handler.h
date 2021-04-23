@@ -13,7 +13,7 @@ class StringHandler {
  public:
   static std::vector<std::string> SplitString(const std::string &original_string,
                                               char delimiter = ' ');
-  static int StringToInteger(const std::string &original_string);
+  static int StringToInteger(std::string &original_string);
  private:
   StringHandler();
 };
