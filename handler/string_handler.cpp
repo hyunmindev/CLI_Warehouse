@@ -17,12 +17,16 @@ std::vector<std::string> StringHandler::SplitString(const std::string &original_
   return sub_strings;
 }
 
-int StringHandler::StringToInteger(std::string &original_string) {
+int StringHandler::StringToInteger(const std::string &original_string) {
   for (int i = 0; i < original_string.size(); ++i) {
-    if(original_string[i]<48||original_string[i]>57)
+    if (original_string[i] < 48 || original_string[i] > 57)
       return -1;
   }
   return std::stoi(original_string);
+}
+
+std::string StringHandler::IntegerToString(const int &original_int) {
+  return std::to_string(original_int);
 }
 
 StringHandler::StringHandler() = default;
