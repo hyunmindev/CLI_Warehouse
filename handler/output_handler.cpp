@@ -26,8 +26,7 @@ void OutputHandler::PrintError(const ErrorType error, const std::string &option)
       break;
     case ErrorType::NO_USER: std::cout << "[Error] 정보에 맞는 이용자가 없습니다.";
       break;
-    case ErrorType::NOT_MATCH_PASSWORD_CONFIRM_PASSWORD:
-      std::cout << "[Error] not match password and confirm password.";
+    case ErrorType::NOT_MATCH_PASSWORD_CONFIRM_PASSWORD:std::cout << "[Error] not match password and confirm password.";
       break;
     case ErrorType::IS_HAS_EQUAL_USERNAME: std::cout << "[Error] 이미 동일한 이름으로 가입한 이용자가 존재합니다.";
       break;
@@ -45,6 +44,8 @@ void OutputHandler::PrintError(const ErrorType error, const std::string &option)
       break;
     case ErrorType::FEW_ITEM_COUNT: std::cout << "[Error] 창고에 해당 물품의 수량이 부족합니다.";
       break;
+    case ErrorType::WRONG_WAREHOUSE: std::cout << "[Error] 해당 창고에는 물품이 존재하지 않습니다. 창고";
+      break;
   }
   if (!option.empty()) {
     std::cout << ": " << option << std::endl;
@@ -57,7 +58,11 @@ void OutputHandler::Warning() {
 
 }
 
-void OutputHandler::Success(const SuccessType success) {
+void OutputHandler::Success(const SuccessType success, const std::string &option1, const std::string &option2) {
+  PrintSuccess(success, option1, option2);
+}
+
+void OutputHandler::PrintSuccess(SuccessType success, const std::string &option1, const std::string &option2) {
   switch (success) {
     case SuccessType::COMPLETE_SIGN_IN: std::cout << "[Notice] complete signin";
       break;
@@ -67,6 +72,7 @@ void OutputHandler::Success(const SuccessType success) {
       break;
     case SuccessType::COMPLETE_CHANGE: std::cout << "[Notice] complete change permission";
       break;
+    case SuccessType::COMPLETE_RELEASE: std::cout << "[Notice] 창고 " << option1 << "에서 " << option2 << "개 출고됐습니다.";
   }
   std::cout << std::endl;
 }

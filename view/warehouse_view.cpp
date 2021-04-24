@@ -17,7 +17,7 @@ void WarehouseView::ProcessInputs(const std::vector<std::string> &inputs) {
   if (command == "help") {
     this->OutputHelp();
   } else if (command == "exit") {
-    this->DeactivateView();
+    this->ProcessExit();
   } else if (command == "receive" && this->prompt_ == Prompt::Main) { // 입고
     if (!View::CheckArguments(arguments, 2, 3)) {
       return;
@@ -62,14 +62,16 @@ void WarehouseView::ProcessRelease(std::string &item_id, int count) {
 //    return;
   }
   if (this->warehouse_controller_.Release(item_id, count)) {
-    std::cout << item_id << std::endl;
     this->view_title_ = "Warehouse : " + item_id + " : 창고 식별자";
+    this->prompt_ = Prompt::WarehouseIdentifiers;
   }
-  this->prompt_ = Prompt::WarehouseIdentifiers;
 }
 
 void WarehouseView::ProcessReleaseSubPrompt(std::vector<std::string> &identifiers) {
-  this->warehouse_controller_.ReleaseSubPrompt(identifiers);
+  if (this->warehouse_controller_.ReleaseSubPrompt(identifiers)) {
+    this->view_title_ = "Warehouse";
+    this->prompt_ = Prompt::Main;
+  }
 }
 
 void WarehouseView::ProcessMove(const std::string &item_id, int count) {
@@ -87,4 +89,12 @@ void WarehouseView::OutputHelp() const {
   std::cout << "exit" << std::endl;
   std::cout << "모드 선택모드로 돌아가는 명령어 입니다." << std::endl;
   std::cout << "======================================" << std::endl;
+}
+
+void WarehouseView::ProcessExit() {
+  if (this->prompt_ != Prompt::Main) {
+    this->view_title_ = "Warehouse";
+    this->prompt_ = Prompt::Main;
+    this->warehouse_controller_.FindItemIndexClear();
+  } else this->DeactivateView();
 }

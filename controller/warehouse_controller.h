@@ -28,13 +28,16 @@ class WarehouseController {
   void ReadStoreState();
   void ReadItem();
   void ReadFiles();
+  void WriteStoreState() const;
   int FindItem(std::string &identifier);
   int FindWarehouse(std::string &identifier);
   void Receive(const std::string &item_id, const std::string &warehouse_id, int count);
   bool Release(std::string &identifier, int item_count);
-  void ReleaseSubPrompt(std::vector<std::string> &identifiers);
+  bool ReleaseSubPrompt(std::vector<std::string> &identifiers);
   void Move(const std::string &item_id, int count);
   int FindWarehouseItemIndex(std::string &item_identifier);
+  void FindItemIndexClear();
+  static bool CheckWarehouseIdentifier(std::string &warehouse_identifier);
  private:
   std::vector<WarehouseState> warehouse_state_;
   std::vector<ItemModel> all_items_;

@@ -19,7 +19,7 @@ std::vector<std::string> StringHandler::SplitString(const std::string &original_
 
 int StringHandler::StringToInteger(const std::string &original_string) {
   for (int i = 0; i < original_string.size(); ++i) {
-    if (original_string[i] < 48 || original_string[i] > 57)
+    if (!std::isdigit(original_string[i]))
       return -1;
   }
   return std::stoi(original_string);
