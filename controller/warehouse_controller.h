@@ -35,7 +35,6 @@ class WarehouseController {
   int FindWarehouse(std::string &identifier);
   int Receive(std::string &identifier, int item_count);
   bool Release(std::string &identifier, int item_count);
-  bool Move(std::string &identifier, int item_count);
   bool ReceiveSubPromptWeight(int weight);
   bool ReceiveSubPromptVolume(int volume);
   bool ReceiveSubPromptIdentifier(std::string &identifier);

@@ -79,6 +79,9 @@ void OutputHandler::PrintSuccess(SuccessType success, const std::string &option1
     case SuccessType::COMPLETE_CHANGE: std::cout << "[Notice] complete change permission";
       break;
     case SuccessType::COMPLETE_RELEASE: std::cout << "[Notice] 창고 " << option1 << "에서 " << option2 << "개 출고됐습니다.";
+      break;
+    case SuccessType::COMPLETE_RECEIVE: std::cout << "[Notice] 창고 " << option1 << "에 " << option2 << "개 입고됐습니다.";
+      break;
   }
   std::cout << std::endl;
 }

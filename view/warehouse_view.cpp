@@ -56,11 +56,11 @@ void WarehouseView::ProcessInputs(const std::vector<std::string> &inputs) {
       OutputHandler::Error(ErrorType::FEW_ARGUMENT);
       return;
     }
-    if (!View::CheckArguments(arguments,0,1)){
+    if (!View::CheckArguments(arguments, 0, 1)) {
       return;
     }
     int weight = StringHandler::StringToInteger(command);
-    if(weight==-1){
+    if (weight == -1) {
       OutputHandler::Error(ErrorType::WRONG_ARGUMENT);
       return;
     }
@@ -70,11 +70,11 @@ void WarehouseView::ProcessInputs(const std::vector<std::string> &inputs) {
       OutputHandler::Error(ErrorType::FEW_ARGUMENT);
       return;
     }
-    if (!View::CheckArguments(arguments,0,1)){
+    if (!View::CheckArguments(arguments, 0, 1)) {
       return;
     }
     int volume = StringHandler::StringToInteger(command);
-    if(volume==-1){
+    if (volume == -1) {
       OutputHandler::Error(ErrorType::WRONG_ARGUMENT);
       return;
     }
@@ -97,6 +97,14 @@ void WarehouseView::ProcessInputs(const std::vector<std::string> &inputs) {
     std::vector<std::string> identifiers = {command};
     identifiers.insert(identifiers.end(), arguments.begin(), arguments.end());
     this->ProcessReleaseSubPrompt(identifiers);
+  } else if (this->prompt_ == Prompt::MoveIdentifiers) {
+    if (command.empty()) {
+      OutputHandler::Error(ErrorType::FEW_ARGUMENT);
+      return;
+    }
+    std::vector<std::string> identifiers = {command};
+    identifiers.insert(identifiers.end(), arguments.begin(), arguments.end());
+    this->ProcessMoveSubPromptIdentifiers(identifiers);
   } else {
     OutputHandler::Error(ErrorType::WRONG_COMMAND, command);
   }
@@ -173,7 +181,17 @@ void WarehouseView::ProcessMove(std::string &item_id, int count) {
     OutputHandler::Error(ErrorType::PERMISSION_DENIED);
 //    return;
   }
-  this->ProcessRelease(item_id, count);
+  if (this->warehouse_controller_.Release(item_id, count)) {
+    this->view_title_ = "Warehouse : " + item_id + " : 창고 식별자";
+    this->prompt_ = Prompt::MoveIdentifiers;
+  }
+}
+
+void WarehouseView::ProcessMoveSubPromptIdentifiers(std::vector<std::string> &identifiers) {
+  if (this->warehouse_controller_.ReleaseSubPrompt(identifiers)) {
+    this->view_title_ = "Warehouse : " + this->warehouse_controller_.GetReceiveItem()->GetIdentifier() + " : 입고 식별자";
+    this->prompt_ = Prompt::WarehouseIdentifier;
+  }
 }
 
 void WarehouseView::OutputHelp() const {

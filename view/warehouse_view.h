@@ -15,7 +15,8 @@ enum class Prompt : char {
   Volume,
   Weight,
   WarehouseIdentifier,
-  WarehouseIdentifiers
+  WarehouseIdentifiers,
+  MoveIdentifiers
 };
 
 class WarehouseView : public View {
@@ -30,6 +31,7 @@ class WarehouseView : public View {
   void ReceiveSubPromptIdentifier(std::string &identifier);     //  입고 식별자 부프롬포트
   void ProcessReleaseSubPrompt(std::vector<std::string> &identifiers); // 출고 부프롬프트
   void ProcessMove(std::string& item_id, int count); // 이동 명령어 처리
+  void ProcessMoveSubPromptIdentifiers(std::vector<std::string> &identifiers);
   void ProcessExit();
   void ProcessPrint(); // 출력 명령어 처리
 
