@@ -23,10 +23,13 @@ class WarehouseView : public View {
   explicit WarehouseView(const std::string &view_title);
   ~WarehouseView();
   void ProcessInputs(const std::vector<std::string> &inputs) override;
-  void ProcessReceive(const std::string& item_id, int count); // 입고 명령어 처리
+  void ProcessReceive(std::string& item_id, int count); // 입고 명령어 처리
   void ProcessRelease(std::string& item_id, int count); // 출고 명령어 처리
+  void ReceiveSubPromptWeight(int weight);      //  입고 무게 부프롬포트
+  void ReceiveSubPromptVolume(int volume);      //  입고 부피 부프롬포트
+  void ReceiveSubPromptIdentifier(std::string &identifier, int item_count);     //  입고 식별자 부프롬포트
   void ProcessReleaseSubPrompt(std::vector<std::string> &identifiers); // 출고 부프롬프트
-  void ProcessMove(const std::string& item_id, int count); // 이동 명령어 처리
+  void ProcessMove(std::string& item_id, int count); // 이동 명령어 처리
   void ProcessExit();
   void ProcessPrint(); // 출력 명령어 처리
 

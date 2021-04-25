@@ -39,7 +39,31 @@ void WarehouseView::ProcessInputs(const std::vector<std::string> &inputs) {
     std::string item_id = arguments.at(0);
     std::string count_string = arguments.at(1);
     this->ProcessMove(item_id, std::stoi(count_string));
-  } else if (this->prompt_ == Prompt::WarehouseIdentifiers) {
+  }else if(this->prompt_ == Prompt::Weight){
+      if (command.empty()) {
+          OutputHandler::Error(ErrorType::FEW_ARGUMENT);
+          return;
+      }
+      int weight;
+      std::cin >> weight;
+      this->ReceiveSubPromptWeight(weight);
+  }else if(this->prompt_ == Prompt::Volume){
+      if (command.empty()) {
+          OutputHandler::Error(ErrorType::FEW_ARGUMENT);
+          return;
+      }
+      int volume;
+      std::cin >> volume;
+      this->ReceiveSubPromptVolume(volume);
+  }else if(this->prompt_ == Prompt::WarehouseIdentifier){
+      if (command.empty()) {
+          OutputHandler::Error(ErrorType::FEW_ARGUMENT);
+          return;
+      }
+      std::string item_id = arguments.at(0);
+      int item_count = stoi(arguments.at(1));
+      this->ReceiveSubPromptIdentifier(item_id, item_count);
+  }else if (this->prompt_ == Prompt::WarehouseIdentifiers) {
     if (command.empty()) {
       OutputHandler::Error(ErrorType::FEW_ARGUMENT);
       return;
@@ -52,8 +76,44 @@ void WarehouseView::ProcessInputs(const std::vector<std::string> &inputs) {
   }
 }
 
-void WarehouseView::ProcessReceive(const std::string &item_id, int count) {
+void WarehouseView::ProcessReceive(std::string &item_id, int count) {
+    if (this->auth_controller_.getCurrentUser() == nullptr) {
+        OutputHandler::Error(ErrorType::NOT_SIGNED_IN);
+    }
+    int ret_val = this->warehouse_controller_.Receive(item_id, count);
+    if(ret_val == 1){
+        this->view_title_ = "Warehouse : " + item_id + " : 무게";
+        this->prompt_ = Prompt::Weight;
+    }
+    else if (ret_val == 2) {
+        this->view_title_ = "Warehouse : " + item_id + " : 부피";
+        this->prompt_ = Prompt::Volume;
+    }
+    else{
+        this->view_title_ = "Warehouse : " + item_id + " : 창고 식별자";
+        this->prompt_ = Prompt::WarehouseIdentifier;
+    }
+}
 
+void WarehouseView::ReceiveSubPromptWeight(int weight) {
+    if (this->warehouse_controller_.ReceiveSubPromptWeight(weight)) {
+        this->view_title_ = "Warehouse";
+        this->prompt_ = Prompt::Main;
+    }
+}
+
+void WarehouseView::ReceiveSubPromptVolume(int volume) {
+    if (this->warehouse_controller_.ReceiveSubPromptVolume(volume)) {
+        this->view_title_ = "Warehouse";
+        this->prompt_ = Prompt::Main;
+    }
+}
+
+void WarehouseView::ReceiveSubPromptIdentifier(std::string &item_id, int item_count) {
+    if (this->warehouse_controller_.ReceiveSubPromptIdentifier(item_id, item_count)) {
+        this->view_title_ = "Warehouse";
+        this->prompt_ = Prompt::Main;
+    }
 }
 
 void WarehouseView::ProcessRelease(std::string &item_id, int count) {
@@ -74,7 +134,7 @@ void WarehouseView::ProcessReleaseSubPrompt(std::vector<std::string> &identifier
   }
 }
 
-void WarehouseView::ProcessMove(const std::string &item_id, int count) {
+void WarehouseView::ProcessMove(std::string &item_id, int count) {
 
 }
 

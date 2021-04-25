@@ -31,10 +31,15 @@ class WarehouseController {
   void WriteStoreState() const;
   int FindItem(std::string &identifier);
   int FindWarehouse(std::string &identifier);
-  void Receive(const std::string &item_id, const std::string &warehouse_id, int count);
+  int Receive(std::string &identifier, int item_count);
   bool Release(std::string &identifier, int item_count);
+  bool Move(std::string& identifier, int item_count);
+  std::vector<std::pair<int, int>> FindWarehouseItemIndex(ItemModel &item);
+  bool ReceiveSubPromptWeight(int weight);
+  bool ReceiveSubPromptVolume(int volume);
+  bool ReceiveSubPromptIdentifier(std::string &identifier, int item_count);
   bool ReleaseSubPrompt(std::vector<std::string> &identifiers);
-  void Move(const std::string &item_id, int count);
+  bool MoveSubPrompt(std::vector<std::string> &identifiers);
   int FindWarehouseItemIndex(std::string &item_identifier);
   void FindItemIndexClear();
   static bool CheckWarehouseIdentifier(std::string &warehouse_identifier);
