@@ -11,7 +11,7 @@ class ItemModel {
  public:
   ItemModel(std::string identifier, int volume, int weight);
   ~ItemModel();
-  bool operator==(const ItemModel &item) {
+  bool operator==(const ItemModel &item) const{
     return this->identifier_ == item.identifier_;
   }
   [[nodiscard]] const std::string &GetIdentifier() const;

@@ -342,14 +342,14 @@ void WarehouseController::FindItemIndexClear() {
   this->find_item_index_.clear();
 }
 
-int WarehouseController::FindWarehouseState(std::string &warehouse_identifier) {
+int WarehouseController::FindWarehouseState(const std::string &warehouse_identifier) const{
   for (int i = 0; i < this->warehouse_state_.size(); ++i) {
     if (warehouse_state_[i].warehouse.GetIdentifier() == warehouse_identifier) return i;
   }
   return -1;
 }
 
-int WarehouseController::FindWarehouseItemIndex(std::string &item_identifier) {
+int WarehouseController::FindWarehouseItemIndex(std::string &item_identifier){
   int count = 0;
   for (int i = 0; i < this->warehouse_state_.size(); ++i) {
     for (int j = 0; j < this->warehouse_state_[i].items_state.size(); ++j) {
@@ -362,8 +362,7 @@ int WarehouseController::FindWarehouseItemIndex(std::string &item_identifier) {
   return count;
 }
 
-int WarehouseController::FindItem(std::string &identifier) {
-  this->ReadFiles();
+int WarehouseController::FindItem(const std::string &identifier) const{
   ItemModel item(identifier, 0, 0);
   int index = 0;
   for (index = 0; index < this->all_items_.size(); ++index) {
@@ -401,7 +400,7 @@ ItemModel *WarehouseController::GetReceiveItem() const {
   return this->receive_item_;
 }
 
-int WarehouseController::GetStateAcceptableVolume(std::string &warehouse_identifier) {
+int WarehouseController::GetStateAcceptableVolume(const std::string &warehouse_identifier) const{
   int index = this->FindWarehouseState(warehouse_identifier);
   int volume = this->warehouse_state_[index].warehouse.GetAcceptableVolume();
 //  std::cout<<volume<<std::endl;
@@ -413,4 +412,8 @@ int WarehouseController::GetStateAcceptableVolume(std::string &warehouse_identif
   }
 //  std::cout<<volume<<std::endl;
   return volume;
+}
+
+std::vector<WarehouseModel> WarehouseController::GetAllWarehouses() const {
+  return this->all_warehouses_;
 }
