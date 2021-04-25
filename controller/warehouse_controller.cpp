@@ -139,7 +139,8 @@ void WarehouseController::Receive(const std::string &item_id, const std::string 
   }
 }
 
-void WarehouseController::Move(const std::string &item_id, int count) {
+
+void WarehouseController::Move(const std::string& item_id, int count){
 
 }
 
