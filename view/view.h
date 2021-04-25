@@ -12,6 +12,7 @@
 #include "../controller/auth_controller.h"
 #include "../controller/warehouse_controller.h"
 
+
 class View {
  public:
   explicit View(std::string view_title);

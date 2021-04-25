@@ -34,11 +34,15 @@ class WarehouseView : public View {
   void ProcessMoveSubPromptIdentifiers(std::vector<std::string> &identifiers);
   void ProcessExit();
   void ProcessPrint(std::string &mode_type, std::string &identifier); // 출력 명령어 처리
+  void SetIsSinged(bool is_signed);
+  void SetPossiblePermission(bool possible_permission);
 
   void OutputHelp() const override;
 
  private:
   Prompt prompt_;
+  bool is_signed_;
+  bool possible_permission_;
 };
 
 #endif //PROJECT_VIEW_WAREHOUSE_VIEW_H_

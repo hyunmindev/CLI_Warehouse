@@ -21,10 +21,14 @@ class AuthView : public View {
   void ProcessSignOut();
   void ProcessChange(std::string &username, Permission permission);
   void ProcessPrint(const std::string &argument = "") const;
+  bool GetIsSinged() const;
+  bool GetPossiblePermission() const;
 
   void OutputHelp() const override;
 
  private:
+  bool is_signed_;
+  bool possible_permission_;
 };
 
 #endif //PROJECT_VIEW_AUTH_VIEW_H_

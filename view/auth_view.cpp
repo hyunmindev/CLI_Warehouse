@@ -77,6 +77,12 @@ void AuthView::ProcessInputs(const std::vector<std::string> &inputs) {
 
 void AuthView::ProcessSignIn(std::string &username, std::string &password) {
   this->auth_controller_.SingIn(username, password);
+  if (this->auth_controller_.getCurrentUser() != nullptr) {
+    this->is_signed_ = true;
+    if (this->auth_controller_.getCurrentUser()->GetPermission() != Permission::COMMON) {
+      this->possible_permission_ = true;
+    }
+  }
 }
 
 void AuthView::ProcessSignUp(std::string &username,
@@ -87,6 +93,7 @@ void AuthView::ProcessSignUp(std::string &username,
 
 void AuthView::ProcessSignOut() {
   this->auth_controller_.SingOut();
+  this->is_signed_ = false;
 }
 
 void AuthView::ProcessChange(std::string &username, Permission permission) {
@@ -145,4 +152,12 @@ void AuthView::OutputHelp() const {
   std::cout << "exit" << std::endl;
   std::cout << "  : 모드 선택모드로 돌아가는 명령어 입니다." << std::endl;
   std::cout << "======================================" << std::endl;
+}
+
+bool AuthView::GetIsSinged() const {
+  return this->is_signed_;
+}
+
+bool AuthView::GetPossiblePermission() const {
+  return this->possible_permission_;
 }

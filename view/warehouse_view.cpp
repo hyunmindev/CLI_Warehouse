@@ -28,7 +28,7 @@ void WarehouseView::ProcessInputs(const std::vector<std::string> &inputs) {
       argument = arguments.at(1);
     }
     this->ProcessPrint(mode_type, argument);
-  }else if (command == "receive" && this->prompt_ == Prompt::Main) { // 입고
+  } else if (command == "receive" && this->prompt_ == Prompt::Main) { // 입고
     if (!View::CheckArguments(arguments, 2, 3)) {
       return;
     }
@@ -121,12 +121,12 @@ void WarehouseView::ProcessInputs(const std::vector<std::string> &inputs) {
 }
 
 void WarehouseView::ProcessReceive(std::string &item_id, int count) {
-  if (this->auth_controller_.getCurrentUser() == nullptr) {
+  if (!this->is_signed_) {
     OutputHandler::Error(ErrorType::NOT_SIGNED_IN);
-//    return;
-  } else if (this->auth_controller_.getCurrentUser()->GetPermission() != Permission::COMMON) {
+    return;
+  } else if (!this->possible_permission_) {
     OutputHandler::Error(ErrorType::PERMISSION_DENIED);
-//    return;
+    return;
   }
   int ret_val = this->warehouse_controller_.Receive(item_id, count);
   if (ret_val == 1) {
@@ -163,12 +163,12 @@ void WarehouseView::ReceiveSubPromptIdentifier(std::string &item_id) {
 }
 
 void WarehouseView::ProcessRelease(std::string &item_id, int count) {
-  if (this->auth_controller_.getCurrentUser() == nullptr) {
+  if (!this->is_signed_) {
     OutputHandler::Error(ErrorType::NOT_SIGNED_IN);
-//    return;
-  } else if (this->auth_controller_.getCurrentUser()->GetPermission() != Permission::COMMON) {
+    return;
+  } else if (!this->possible_permission_) {
     OutputHandler::Error(ErrorType::PERMISSION_DENIED);
-//    return;
+    return;
   }
   if (this->warehouse_controller_.Release(item_id, count)) {
     this->view_title_ = "Warehouse : " + item_id + " : 창고 식별자";
@@ -184,12 +184,12 @@ void WarehouseView::ProcessReleaseSubPrompt(std::vector<std::string> &identifier
 }
 
 void WarehouseView::ProcessMove(std::string &item_id, int count) {
-  if (this->auth_controller_.getCurrentUser() == nullptr) {
+  if (!this->is_signed_) {
     OutputHandler::Error(ErrorType::NOT_SIGNED_IN);
-//    return;
-  } else if (this->auth_controller_.getCurrentUser()->GetPermission() != Permission::COMMON) {
+    return;
+  } else if (!this->possible_permission_) {
     OutputHandler::Error(ErrorType::PERMISSION_DENIED);
-//    return;
+    return;
   }
   if (this->warehouse_controller_.Release(item_id, count)) {
     this->view_title_ = "Warehouse : " + item_id + " : 창고 식별자";
@@ -217,7 +217,7 @@ void WarehouseView::OutputHelp() const {
   std::cout << "======================================" << std::endl;
 }
 
-void WarehouseView::ProcessExit(){
+void WarehouseView::ProcessExit() {
   if (this->prompt_ != Prompt::Main) {
     this->view_title_ = "Warehouse";
     this->prompt_ = Prompt::Main;
@@ -252,13 +252,21 @@ void WarehouseView::ProcessPrint(std::string &mode_type, std::string &identifier
                   << this->warehouse_controller_.GetAllWarehouses()[i].GetAllowMaxWeight() << "KG" << std::endl;
       }
     }
-  } else if(mode_type == "item") {
+  } else if (mode_type == "item") {
     bool is_in_warehouse = this->warehouse_controller_.GetItemInfo(identifier);
     if (!is_in_warehouse) {
       OutputHandler::Error(ErrorType::NO_EXISTING_ITEM);
       return;
     }
-  } else{
+  } else {
     OutputHandler::Error(ErrorType::WRONG_ARGUMENT);
   }
+}
+
+void WarehouseView::SetIsSinged(bool is_singed) {
+  this->is_signed_ = is_singed;
+}
+
+void WarehouseView::SetPossiblePermission(bool possible_permission) {
+  this->possible_permission_ = possible_permission;
 }

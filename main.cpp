@@ -54,6 +54,8 @@ int main() {
     if (auth_view.GetIsViewActivated()) {
       auth_view.Interact();
     } else if (warehouse_view.GetIsViewActivated()) {
+      warehouse_view.SetIsSinged(auth_view.GetIsSinged());
+      warehouse_view.SetPossiblePermission(auth_view.GetPossiblePermission());
       warehouse_view.Interact();
     } else {
       std::vector<std::string> inputs = GetInputs();
