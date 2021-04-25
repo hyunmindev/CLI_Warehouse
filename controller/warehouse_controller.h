@@ -42,6 +42,7 @@ class WarehouseController {
   int FindWarehouseItemIndex(std::string &item_identifier);
   void FindItemIndexClear();
   static bool CheckWarehouseIdentifier(std::string &warehouse_identifier);
+  bool GetItemInfo(std::string &item_id) const;
   ItemModel *GetReceiveItem() const;
  private:
   std::vector<WarehouseState> warehouse_state_;

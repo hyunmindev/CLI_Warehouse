@@ -27,12 +27,7 @@ void WarehouseView::ProcessInputs(const std::vector<std::string> &inputs) {
     if (arguments.size() == 2) {
       argument = arguments.at(1);
     }
-    if (mode_type == "warehouse"){
-      this->ProcessPrint(mode_type, argument);
-    }
-    else if (mode_type == "item"){
-      this->ProcessPrint(mode_type, argument);
-    }
+    this->ProcessPrint(mode_type, argument);
   }else if (command == "receive" && this->prompt_ == Prompt::Main) { // 입고
     if (!View::CheckArguments(arguments, 2, 3)) {
       return;
@@ -233,25 +228,13 @@ void WarehouseView::ProcessExit(){
 void WarehouseView::ProcessPrint(std::string &mode_type, std::string &identifier) const{
   if (mode_type == "Warehouse") {
     std::cout << "=================== Print Warehouse ===================" << std::endl;
-      if (argument == "") {
-          if (current_permission == Permission::Manager) {
-              std::vector<UserModel> users = this->auth_controller_.getAllUsers();
-              for (int i = 0; i < users.size(); ++i) {
-                  std::cout << "[Username: " << users[i].GetUsername() << "]\t" << "[Password: " << users[i].GetPassword()
-                            << "]\t"
-                            << "[Permission: " << UserModel::ConvertEnumPermissionToString(users[i].GetPermission()) << "]"
-                            << std::endl;
-              }
-          } else {
-              std::cout << "[Username: " << this->auth_controller_.getCurrentUser()->GetUsername() << "]\t"
-                        << "[Password: " << this->auth_controller_.getCurrentUser()->GetPassword() << "]\t"
-                        << "[Permission: "
-                        << UserModel::ConvertEnumPermissionToString(this->auth_controller_.getCurrentUser()->GetPermission())
-                        << "]" << std::endl;
-          }
-      }
   } else if(mode_type == "item") {
+    bool is_in_warehouse = this->warehouse_controller_.GetItemInfo(identifier);
+    if (!is_in_warehouse) {
+      OutputHandler::Error(ErrorType::NO_EXISTING_ITEM);
+      return;
+    }
   } else{
-    OutputHandler::Error(ErrorType::WRONG_COMMAND);
+    OutputHandler::Error(ErrorType::WRONG_ARGUMENT);
   }
 }

@@ -408,3 +408,15 @@ bool WarehouseController::CheckWarehouseIdentifier(std::string &warehouse_identi
 ItemModel *WarehouseController::GetReceiveItem() const {
   return this->receive_item_;
 }
+
+bool WarehouseController::GetItemInfo(std::string &item_id) const{
+  int index;
+  for (index = 0; index < this->all_items_.size(); ++index) {
+    if(this->all_items_[index].GetIdentifier() == item_id) {
+        std::cout << "물품: " << item_id << "\t무게: " << all_items_[index].GetWeight() << "\t부피: "
+                  << all_items_[index].GetVolume() << std::endl;
+        return true;
+    }
+  }
+  return false;
+}
