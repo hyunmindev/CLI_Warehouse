@@ -18,7 +18,22 @@ void WarehouseView::ProcessInputs(const std::vector<std::string> &inputs) {
     this->OutputHelp();
   } else if (command == "exit") {
     this->ProcessExit();
-  } else if (command == "receive" && this->prompt_ == Prompt::Main) { // 입고
+  }else if(command == "print"){
+    if(!View::CheckArguments(arguments, 1, 3)) {
+      return;
+    }
+    std::string mode_type = arguments.at(0);
+    std::string argument = "";
+    if (arguments.size() == 2) {
+      argument = arguments.at(1);
+    }
+    if (mode_type == "warehouse"){
+      this->ProcessPrint(mode_type, argument);
+    }
+    else if (mode_type == "item"){
+      this->ProcessPrint(mode_type, argument);
+    }
+  }else if (command == "receive" && this->prompt_ == Prompt::Main) { // 입고
     if (!View::CheckArguments(arguments, 2, 3)) {
       return;
     }
@@ -207,10 +222,36 @@ void WarehouseView::OutputHelp() const {
   std::cout << "======================================" << std::endl;
 }
 
-void WarehouseView::ProcessExit() {
+void WarehouseView::ProcessExit(){
   if (this->prompt_ != Prompt::Main) {
     this->view_title_ = "Warehouse";
     this->prompt_ = Prompt::Main;
     this->warehouse_controller_.FindItemIndexClear();
   } else this->DeactivateView();
+}
+
+void WarehouseView::ProcessPrint(std::string &mode_type, std::string &identifier) const{
+  if (mode_type == "Warehouse") {
+    std::cout << "=================== Print Warehouse ===================" << std::endl;
+      if (argument == "") {
+          if (current_permission == Permission::Manager) {
+              std::vector<UserModel> users = this->auth_controller_.getAllUsers();
+              for (int i = 0; i < users.size(); ++i) {
+                  std::cout << "[Username: " << users[i].GetUsername() << "]\t" << "[Password: " << users[i].GetPassword()
+                            << "]\t"
+                            << "[Permission: " << UserModel::ConvertEnumPermissionToString(users[i].GetPermission()) << "]"
+                            << std::endl;
+              }
+          } else {
+              std::cout << "[Username: " << this->auth_controller_.getCurrentUser()->GetUsername() << "]\t"
+                        << "[Password: " << this->auth_controller_.getCurrentUser()->GetPassword() << "]\t"
+                        << "[Permission: "
+                        << UserModel::ConvertEnumPermissionToString(this->auth_controller_.getCurrentUser()->GetPermission())
+                        << "]" << std::endl;
+          }
+      }
+  } else if(mode_type == "item") {
+  } else{
+    OutputHandler::Error(ErrorType::WRONG_COMMAND);
+  }
 }
