@@ -33,7 +33,7 @@ class WarehouseView : public View {
   void ProcessMove(std::string& item_id, int count); // 이동 명령어 처리
   void ProcessMoveSubPromptIdentifiers(std::vector<std::string> &identifiers);
   void ProcessExit();
-  void ProcessPrint(std::string &mode_type, std::string &identifier) const; // 출력 명령어 처리
+  void ProcessPrint(std::string &mode_type, std::string &identifier); // 출력 명령어 처리
 
   void OutputHelp() const override;
 

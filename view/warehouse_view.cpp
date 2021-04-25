@@ -18,8 +18,8 @@ void WarehouseView::ProcessInputs(const std::vector<std::string> &inputs) {
     this->OutputHelp();
   } else if (command == "exit") {
     this->ProcessExit();
-  }else if(command == "print"){
-    if(!View::CheckArguments(arguments, 1, 3)) {
+  } else if (command == "print") {
+    if (!View::CheckArguments(arguments, 1, 3)) {
       return;
     }
     std::string mode_type = arguments.at(0);
@@ -225,9 +225,33 @@ void WarehouseView::ProcessExit(){
   } else this->DeactivateView();
 }
 
-void WarehouseView::ProcessPrint(std::string &mode_type, std::string &identifier) const{
-  if (mode_type == "Warehouse") {
+void WarehouseView::ProcessPrint(std::string &mode_type, std::string &identifier) {
+  if (mode_type == "warehouse") {
     std::cout << "=================== Print Warehouse ===================" << std::endl;
+    if (identifier == "") {
+      for (int i = 0; i < this->warehouse_controller_.GetAllWarehouses().size(); ++i) {
+        std::cout << "창고 : " << this->warehouse_controller_.GetAllWarehouses()[i].GetIdentifier() << "\t수용가능 부피 : "
+                  << this->warehouse_controller_.GetAllWarehouses()[i].GetAcceptableVolume() << "L\t현재수용 부피 : "
+                  << this->warehouse_controller_.GetAllWarehouses()[i].GetAcceptableVolume()
+                      - this->warehouse_controller_.GetStateAcceptableVolume(this->warehouse_controller_.GetAllWarehouses()[i].GetIdentifier())
+                  << "L\t수용가능 무게 범위" << this->warehouse_controller_.GetAllWarehouses()[i].GetAllowMinWeight() << "KG - "
+                  << this->warehouse_controller_.GetAllWarehouses()[i].GetAllowMaxWeight() << "KG" << std::endl;
+      }
+      return;
+    } else {
+      int i = this->warehouse_controller_.FindWarehouse(identifier);
+      if (i == -1) {
+        OutputHandler::Error(ErrorType::NO_EXISTING_WAREHOUSE);
+        return;
+      } else {
+        std::cout << "창고 : " << this->warehouse_controller_.GetAllWarehouses()[i].GetIdentifier() << "\t수용가능 부피 : "
+                  << this->warehouse_controller_.GetAllWarehouses()[i].GetAcceptableVolume() << "L\t현재수용 부피 : "
+                  << this->warehouse_controller_.GetAllWarehouses()[i].GetAcceptableVolume()
+                      - this->warehouse_controller_.GetStateAcceptableVolume(this->warehouse_controller_.GetAllWarehouses()[i].GetIdentifier())
+                  << "L\t수용가능 무게 범위" << this->warehouse_controller_.GetAllWarehouses()[i].GetAllowMinWeight() << "KG - "
+                  << this->warehouse_controller_.GetAllWarehouses()[i].GetAllowMaxWeight() << "KG" << std::endl;
+      }
+    }
   } else if(mode_type == "item") {
     bool is_in_warehouse = this->warehouse_controller_.GetItemInfo(identifier);
     if (!is_in_warehouse) {
