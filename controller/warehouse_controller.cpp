@@ -116,104 +116,72 @@ void WarehouseController::WriteStoreState() const {
 }
 
 void WarehouseController::ReadFiles() {
-    this->ReadItem();
-    this->ReadWarehouse();
-    this->ReadStoreState();
+  this->ReadItem();
+  this->ReadWarehouse();
+  this->ReadStoreState();
 }
 
-int WarehouseController::Receive(std::string& identifier, int item_count){
-    this->ReadFiles();
-    int item_index = this->FindItem(identifier);
-    if (item_index== -1) {
-        return 1;       //  goto 무게부피 입력 부프롬포
-    }
-    else{
-        ItemModel item = this->all_items_[item_index];
-        std::cout << "이미 입고된 " << item.GetIdentifier() << " 품목이 있습니다:"<< std::endl;
-        std::cout << "\t개별무게: " << item.GetWeight()
-                  << "\t개별부피: " << item.GetVolume() << std::endl;
+int WarehouseController::Receive(std::string &identifier, int item_count) {
+  this->ReadFiles();
+  int item_index = this->FindItem(identifier);
+  if (item_index == -1) {
+    return 1;       //  goto 무게부피 입력 부프롬포
+  } else {
+    ItemModel item = this->all_items_[item_index];
+    std::cout << "이미 입고된 " << item.GetIdentifier() << " 품목이 있습니다:" << std::endl;
+    std::cout << "\t개별무게: " << item.GetWeight()
+              << "\t개별부피: " << item.GetVolume() << std::endl;
 
-        std::vector<WarehouseState>::iterator it = warehouse_state_.begin();
-        std::vector<std::pair<std::string, int>>::iterator iter = it->items_state.begin();
-        while(it != warehouse_state_.end()){
-            while(iter != it->items_state.end()){
-                if(iter->first == item.GetIdentifier()){
-                    std::cout << "\t창고: " << it->warehouse.GetIdentifier()
-                              << "\t개수" << iter->second << std::endl;
-                }
-            }
+    std::vector<WarehouseState>::iterator it = warehouse_state_.begin();
+    std::vector<std::pair<std::string, int>>::iterator iter = it->items_state.begin();
+    while (it != warehouse_state_.end()) {
+      while (iter != it->items_state.end()) {
+        if (iter->first == item.GetIdentifier()) {
+          std::cout << "\t창고: " << it->warehouse.GetIdentifier()
+                    << "\t개수" << iter->second << std::endl;
         }
-
-        return 2; //  goto identifier 부프롬포트
-
+      }
     }
-}
 
+    return 2; //  goto identifier 부프롬포트
 
-bool WarehouseController::Move(std::string& identifier, int item_count){
-    this->ReadFiles();
-    int item_index = this->FindItem(identifier);
-    if (item_index == -1) {
-        OutputHandler::Error(ErrorType::NO_EXISTING_ITEM);
-        return false;
-    }
-    else {
-        ItemModel item = this->all_items_[item_index];
-
-        std::vector<WarehouseState>::iterator it = warehouse_state_.begin();
-        std::vector<std::pair<std::string, int>>::iterator iter = it->items_state.begin();
-        while (it != warehouse_state_.end()) {
-            while (iter != it->items_state.end()) {
-                if (iter->first == item.GetIdentifier()) {
-                    std::cout << "\t창고: " << it->warehouse.GetIdentifier()
-                              << "\t개수" << iter->second << std::endl;
-                }
-            }
-        }
-        //  goto identifiers 부프롬포트
-        std::string target_identifier;
-        //  goto identifier 부프롬포트
-        std::cin >> target_identifier;
-
-
-    }
+  }
 }
 
 bool WarehouseController::ReceiveSubPromptWeight(int weight) {
 
 }
 
-bool WarehouseController::ReceiveSubPromptVolume(int volume){
+bool WarehouseController::ReceiveSubPromptVolume(int volume) {
 
 }
 
 bool WarehouseController::ReceiveSubPromptIdentifier(std::string &identifier, int item_count) {
-    std::vector<WarehouseState>::iterator it = warehouse_state_.begin();
-    std::vector<std::pair<std::string, int>>::iterator iter = it->items_state.begin();
-    std::string input_warehouse;
-    std::cin>> input_warehouse;
+  std::vector<WarehouseState>::iterator it = warehouse_state_.begin();
+  std::vector<std::pair<std::string, int>>::iterator iter = it->items_state.begin();
+  std::string input_warehouse;
+  std::cin >> input_warehouse;
 
-    remove("store_state.txt");
-    std::ofstream update_store_state;
-    update_store_state.open("store_state.txt", std::ios::out); //file name
-    if (update_store_state.is_open()) {
-        while (it != warehouse_state_.end()) {
-            std::string temp_warehouse_id = it->warehouse.GetIdentifier();
-            while(iter != it->items_state.end()){
-                if(temp_warehouse_id == input_warehouse && iter->first == identifier){
-                    std::string tmp = temp_warehouse_id + '\t' + iter->first + '\t' +
-                                      StringHandler::IntegerToString(item_count);
-                    update_store_state.write(tmp.c_str(), tmp.size());
-                }
-                else {
-                    std::string tmp = temp_warehouse_id + '\t' + iter->first + '\t' +
-                                      StringHandler::IntegerToString(iter->second);
-                    update_store_state.write(tmp.c_str(), tmp.size());
-                }
-            }
-
+  remove("store_state.txt");
+  std::ofstream update_store_state;
+  update_store_state.open("store_state.txt", std::ios::out); //file name
+  if (update_store_state.is_open()) {
+    while (it != warehouse_state_.end()) {
+      std::string temp_warehouse_id = it->warehouse.GetIdentifier();
+      while (iter != it->items_state.end()) {
+        if (temp_warehouse_id == input_warehouse && iter->first == identifier) {
+          std::string tmp = temp_warehouse_id + '\t' + iter->first + '\t' +
+              StringHandler::IntegerToString(item_count);
+          update_store_state.write(tmp.c_str(), tmp.size());
+        } else {
+          std::string tmp = temp_warehouse_id + '\t' + iter->first + '\t' +
+              StringHandler::IntegerToString(iter->second);
+          update_store_state.write(tmp.c_str(), tmp.size());
         }
+      }
+
     }
+  }
 }
 
 bool WarehouseController::Release(std::string &identifier, int item_count) {
