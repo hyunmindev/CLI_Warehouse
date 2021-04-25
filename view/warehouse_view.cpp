@@ -214,3 +214,7 @@ void WarehouseView::ProcessExit() {
     this->warehouse_controller_.FindItemIndexClear();
   } else this->DeactivateView();
 }
+
+void WarehouseView::ProcessPrint() {
+  
+}

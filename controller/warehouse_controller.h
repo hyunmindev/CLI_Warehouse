@@ -17,6 +17,7 @@
 
 struct WarehouseState {
   WarehouseModel warehouse;
+//  int a
   std::vector<std::pair<std::string, int>> items_state;
 };
 
@@ -39,6 +40,8 @@ class WarehouseController {
   bool ReceiveSubPromptVolume(int volume);
   bool ReceiveSubPromptIdentifier(std::string &identifier);
   bool ReleaseSubPrompt(std::vector<std::string> &identifiers);
+  int GetStateAcceptableVolume(std::string &warehouse_identifier);
+  int FindWarehouseState(std::string &warehouse_identifier);
   int FindWarehouseItemIndex(std::string &item_identifier);
   void FindItemIndexClear();
   static bool CheckWarehouseIdentifier(std::string &warehouse_identifier);

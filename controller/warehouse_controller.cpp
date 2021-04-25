@@ -148,6 +148,7 @@ void WarehouseController::ReadFiles() {
 
 int WarehouseController::Receive(std::string &identifier, int item_count) {
   this->ReadFiles();
+
   int item_index = this->FindItem(identifier);
   this->item_count_ = item_count;
   this->receive_item_ = new ItemModel(identifier, 0, 0);
@@ -160,6 +161,7 @@ int WarehouseController::Receive(std::string &identifier, int item_count) {
               << "\t개별부피: " << item.GetVolume() << std::endl;
     this->receive_item_->SetVolume(item.GetVolume());
     this->receive_item_->SetWeight(item.GetWeight());
+    this->FindItemIndexClear();
     this->FindWarehouseItemIndex(identifier);
     for (int i = 0; i < this->find_item_index_.size(); ++i) {
       std::cout << "\t창고: " << this->warehouse_state_[this->find_item_index_[i].first].warehouse.GetIdentifier()
@@ -197,9 +199,9 @@ bool WarehouseController::ReceiveSubPromptIdentifier(std::string &identifier) {
     OutputHandler::Error(ErrorType::NO_EXISTING_WAREHOUSE, identifier);
     return false;
   }
-  if (this->all_warehouses_[warehouse_index].GetAcceptableVolume()
-      < this->receive_item_->GetVolume() * this->item_count_) {
-    std::cout<<this->item_count_<<std::endl;
+  int acceptable_volume = this->GetStateAcceptableVolume(identifier);
+  std::cout<<acceptable_volume<<std::endl;
+  if (acceptable_volume < this->receive_item_->GetVolume() * this->item_count_) {
     OutputHandler::Error(ErrorType::FEW_ACCEPTED_VOLUME);
     return false;
   }
@@ -227,18 +229,12 @@ bool WarehouseController::ReceiveSubPromptIdentifier(std::string &identifier) {
                                                          this->item_count_});
         is_receive = true;
       }
-      this->all_warehouses_[warehouse_index].SetAcceptableVolume(
-          this->all_warehouses_[warehouse_index].GetAcceptableVolume()
-              - this->item_count_ * this->receive_item_->GetVolume());
       break;
     }
   }
   if (!is_receive) {
     std::vector<std::pair<std::string, int>> item = {{this->receive_item_->GetIdentifier(), this->item_count_}};
     this->warehouse_state_.push_back({this->all_warehouses_[warehouse_index], item});
-    this->all_warehouses_[warehouse_index].SetAcceptableVolume(
-        this->all_warehouses_[warehouse_index].GetAcceptableVolume()
-            - this->item_count_ * this->receive_item_->GetVolume());
   }
   this->WriteItem();
   this->WriteWarehouse();
@@ -323,11 +319,6 @@ bool WarehouseController::ReleaseSubPrompt(std::vector<std::string> &identifiers
       this->warehouse_state_[index_item_in_warehouse[index_item_in_warehouse.size()
           - 1].first].items_state[index_item_in_warehouse[i].second].second -=
           this->item_count_;
-      this->warehouse_state_[index_item_in_warehouse[index_item_in_warehouse.size()
-          - 1].first].warehouse.SetAcceptableVolume(
-          this->warehouse_state_[index_item_in_warehouse[index_item_in_warehouse.size()
-              - 1].first].warehouse.GetAcceptableVolume()
-              + this->all_items_[item_index].GetVolume() * this->item_count_);
       OutputHandler::Success(SuccessType::COMPLETE_RELEASE,
                              this->warehouse_state_[index_item_in_warehouse[i].first].warehouse.GetIdentifier(),
                              StringHandler::IntegerToString(this->item_count_));
@@ -338,12 +329,6 @@ bool WarehouseController::ReleaseSubPrompt(std::vector<std::string> &identifiers
                            StringHandler::IntegerToString(this->warehouse_state_[index_item_in_warehouse[i].first]
                                                               .items_state[index_item_in_warehouse[i].second].second));
 
-    this->warehouse_state_[index_item_in_warehouse[index_item_in_warehouse.size()
-        - 1].first].warehouse.SetAcceptableVolume(
-        this->warehouse_state_[index_item_in_warehouse[index_item_in_warehouse.size()
-            - 1].first].warehouse.GetAcceptableVolume()
-            + this->all_items_[item_index].GetVolume()
-                * this->warehouse_state_[index_item_in_warehouse[i].first].items_state[this->find_item_index_[i].second].second);
     this->warehouse_state_[index_item_in_warehouse[i].first].items_state.erase(
         this->warehouse_state_[index_item_in_warehouse[i].first].items_state.begin()
             + index_item_in_warehouse[i].second);
@@ -355,6 +340,13 @@ bool WarehouseController::ReleaseSubPrompt(std::vector<std::string> &identifiers
 
 void WarehouseController::FindItemIndexClear() {
   this->find_item_index_.clear();
+}
+
+int WarehouseController::FindWarehouseState(std::string &warehouse_identifier) {
+  for (int i = 0; i < this->warehouse_state_.size(); ++i) {
+    if (warehouse_state_[i].warehouse.GetIdentifier() == warehouse_identifier) return i;
+  }
+  return -1;
 }
 
 int WarehouseController::FindWarehouseItemIndex(std::string &item_identifier) {
@@ -407,4 +399,18 @@ bool WarehouseController::CheckWarehouseIdentifier(std::string &warehouse_identi
 
 ItemModel *WarehouseController::GetReceiveItem() const {
   return this->receive_item_;
+}
+
+int WarehouseController::GetStateAcceptableVolume(std::string &warehouse_identifier) {
+  int index = this->FindWarehouseState(warehouse_identifier);
+  int volume = this->warehouse_state_[index].warehouse.GetAcceptableVolume();
+//  std::cout<<volume<<std::endl;
+  if (index == -1) return volume;
+  for (int i = 0; i < this->warehouse_state_[index].items_state.size(); ++i) {
+    volume -= this->all_items_[this->FindItem(this->warehouse_state_[index].items_state[i].first)].GetVolume()
+        * this->warehouse_state_[index].items_state[i].second;
+//    std::cout<<this->all_items_[this->FindItem(this->warehouse_state_[index].items_state[i].first)].GetIdentifier()<<std::endl;
+  }
+//  std::cout<<volume<<std::endl;
+  return volume;
 }
