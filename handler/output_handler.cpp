@@ -48,6 +48,10 @@ void OutputHandler::PrintError(const ErrorType error, const std::string &option)
       break;
     case ErrorType::WRONG_WAREHOUSE: std::cout << "[Error] 해당 창고에는 물품이 존재하지 않습니다. 창고";
       break;
+    case ErrorType::FEW_ACCEPTED_VOLUME: std::cout << "[Error] 해당 창고에는 여유공간이 없습니다.";
+      break;
+    case ErrorType::UNACCEPTABLE_WEIGHT: std::cout << "[Error] 해당 창고는 해당 물품의 무게를 수용하지 못합니다.";
+      break;
   }
   if (!option.empty()) {
     std::cout << ": " << option << std::endl;
