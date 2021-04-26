@@ -11,6 +11,7 @@ AuthController::AuthController() : current_user_(nullptr) {
 AuthController::~AuthController() = default;
 
 void AuthController::ReadUsers() {
+  this->all_users_.clear();
   std::ifstream read_auth_file;
   read_auth_file.open("./auth.txt", std::ios::in); //file name
   if (read_auth_file.is_open()) {
@@ -23,10 +24,7 @@ void AuthController::ReadUsers() {
           user(std::move(user_information[0]),
                std::move(user_information[1]),
                UserModel::ConvertStringPermissionToEnum(user_information[2]));
-      if (std::find(this->all_users_.begin(), this->all_users_.end(), user)
-          == this->all_users_.end()) {
-        this->all_users_.push_back(user);
-      }
+      this->all_users_.push_back(user);
     }
   } else {
     std::ofstream new_file("./auth.txt");
@@ -42,11 +40,13 @@ void AuthController::SingIn(std::string &username, std::string &password) {
     return;
   }
   this->ReadUsers();
-  UserModel user(std::move(username), std::move(password));
-  user = this->FindUser(user);
-  if (!(user == *this->all_users_.end())) {
+  UserModel user(username, std::move(password));
+  int index = this->FindUserIndex(user);
+  if (index != -1) {
     this->current_user_ =
-        new UserModel(user.GetUsername(), user.GetPassword(), user.GetPermission());
+        new UserModel(this->all_users_[index].GetUsername(),
+                      this->all_users_[index].GetPassword(),
+                      this->all_users_[index].GetPermission());
     OutputHandler::Success(SuccessType::COMPLETE_SIGN_IN);
     return;
   }
@@ -121,8 +121,13 @@ UserModel *AuthController::getCurrentUser() const {
   return this->current_user_;
 }
 
-UserModel AuthController::FindUser(const UserModel &user) const {
-  return *std::find(this->all_users_.begin(), this->all_users_.end(), user);
+int AuthController::FindUserIndex(const UserModel &user) const {
+  for (int i = 0; i < this->all_users_.size(); ++i) {
+    if (this->all_users_[i] == user) {
+      return i;
+    }
+  }
+  return -1;
 }
 
 int AuthController::FindUsernameIndex(const UserModel &user) const {
