@@ -39,15 +39,20 @@ enum class SuccessType {
   COMPLETE_RECEIVE
 };
 
+enum class WarningType {
+  EXISTING_ITEM
+};
+
 class OutputHandler {
  public:
   static void Error(ErrorType error_type = ErrorType::UNKNOWN, const std::string &option = "");
-  static void Warning();
+  static void Warning(WarningType warning_type);
   static void Success(SuccessType success_type, const std::string &option1 = "", const std::string &option2 = "");
 
  private:
   OutputHandler();
   static void PrintError(ErrorType error, const std::string &option);
+  static void PrintWarning(WarningType warning);
   static void PrintSuccess(SuccessType success, const std::string &option1, const std::string &option2);
 };
 

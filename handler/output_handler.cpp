@@ -60,15 +60,22 @@ void OutputHandler::PrintError(const ErrorType error, const std::string &option)
   }
 }
 
-void OutputHandler::Warning() {
+void OutputHandler::Warning(const WarningType warning_type) {
+  PrintWarning(warning_type);
+}
 
+void OutputHandler::PrintWarning(const WarningType warning) {
+  switch (warning) {
+    case WarningType::EXISTING_ITEM: std::cout << "[Warning] 이미 입고된 물티슈 품목이 있습니다 :";
+  }
+  std::cout << std::endl;
 }
 
 void OutputHandler::Success(const SuccessType success, const std::string &option1, const std::string &option2) {
   PrintSuccess(success, option1, option2);
 }
 
-void OutputHandler::PrintSuccess(SuccessType success, const std::string &option1, const std::string &option2) {
+void OutputHandler::PrintSuccess(const SuccessType success, const std::string &option1, const std::string &option2) {
   switch (success) {
     case SuccessType::COMPLETE_SIGN_IN: std::cout << "[Notice] complete signin";
       break;

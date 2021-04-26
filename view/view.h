@@ -31,6 +31,7 @@ class View {
   bool is_view_activated_ = false;
   AuthController auth_controller_;
   WarehouseController warehouse_controller_;
+  static bool is_signed;
 };
 
 #endif //PROJECT_VIEW_VIEW_H_

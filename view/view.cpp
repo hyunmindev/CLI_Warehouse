@@ -5,11 +5,9 @@
 #include "view.h"
 
 View::View(std::string view_title) : view_title_(std::move(view_title)) {
-//  std::cout << view_title_ << " view class constructed" << std::endl;
 }
 
 View::~View() {
-//  std::cout << view_title_ << " view class destructed" << std::endl;
 }
 
 void View::ActivateView() {

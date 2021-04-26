@@ -13,6 +13,13 @@ void OutputHelp() {
   std::cout << "======================================" << std::endl;
 }
 
+void OutputPrint() {
+  std::cout << "================ Manual ==============" << std::endl;
+  std::cout << "인증 명령어 모드(Auth)" << std::endl;
+  std::cout << "창고 명령어 모드(Warehouse)" << std::endl;
+  std::cout << "======================================" << std::endl;
+}
+
 std::vector<std::string> GetInputs() {
   std::string input;
   std::cout << ">> ";
@@ -24,7 +31,8 @@ std::vector<std::string> GetInputs() {
 void ProcessInput(const std::vector<std::string> &inputs,
                   const std::function<void()> &on_open_auth,
                   const std::function<void()> &on_open_warehouse,
-                  const std::function<void()> &on_help) {
+                  const std::function<void()> &on_help,
+                  const std::function<void()> &on_print) {
   if (inputs.size() > 2) {
     OutputHandler::Error(ErrorType::MANY_ARGUMENT);
     return;
@@ -41,6 +49,11 @@ void ProcessInput(const std::vector<std::string> &inputs,
   } else if (command == "help") {
     on_help();
   } else if (command == "print") {
+    if (inputs[1] == "mode") {
+      on_print();
+    } else {
+      OutputHandler::Error(ErrorType::WRONG_ARGUMENT);
+    }
   } else {
     OutputHandler::Error(ErrorType::WRONG_COMMAND);
   }
@@ -72,6 +85,8 @@ int main() {
         warehouse_view.ActivateView(); // on open warehouse
       }, [] { // on help
         OutputHelp();
+      }, [] {
+        OutputPrint();
       });
     }
   }

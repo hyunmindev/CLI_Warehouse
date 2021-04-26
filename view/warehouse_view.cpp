@@ -4,7 +4,8 @@
 
 #include "warehouse_view.h"
 
-WarehouseView::WarehouseView(const std::string &view_title) : View(view_title), prompt_(Prompt::Main) {}
+WarehouseView::WarehouseView(const std::string &view_title) : View(view_title), prompt_(Prompt::Main) {
+}
 WarehouseView::~WarehouseView() = default;
 
 void WarehouseView::ProcessInputs(const std::vector<std::string> &inputs) {
