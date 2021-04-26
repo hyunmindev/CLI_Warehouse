@@ -1,4 +1,5 @@
 #include <functional>
+#include <filesystem>
 
 #include "view/auth_view.h"
 #include "view/warehouse_view.h"
@@ -60,6 +61,8 @@ void ProcessInput(const std::vector<std::string> &inputs,
 }
 
 int main() {
+  std::cout << "데이터 파일 경로 : " << std::filesystem::current_path() << std::endl;
+
   AuthView auth_view("Auth");
   WarehouseView warehouse_view("Warehouse");
   OutputHelp();
