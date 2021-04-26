@@ -20,7 +20,7 @@ class AuthController {
   ~AuthController();
   void ReadUsers();
   UserModel FindUser(const UserModel &user) const;
-  int FindUsernameIndex(const UserModel user) const;
+  int FindUsernameIndex(const UserModel& user) const;
   void SingIn(std::string &username, std::string &password);
   void SingUp(std::string &username, std::string &password, std::string &confirm_password);
   void SingOut();

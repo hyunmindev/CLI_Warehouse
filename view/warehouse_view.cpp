@@ -24,7 +24,7 @@ void WarehouseView::ProcessInputs(const std::vector<std::string> &inputs) {
       return;
     }
     std::string mode_type = arguments.at(0);
-    std::string argument = "";
+    std::string argument;
     if (arguments.size() == 2) {
       argument = arguments.at(1);
     }

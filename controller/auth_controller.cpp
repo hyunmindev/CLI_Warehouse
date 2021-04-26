@@ -4,8 +4,6 @@
 
 #include "auth_controller.h"
 
-#include <utility>
-
 AuthController::AuthController() : current_user_(nullptr) {
   this->ReadUsers();
 }
@@ -14,7 +12,7 @@ AuthController::~AuthController() = default;
 
 void AuthController::ReadUsers() {
   std::ifstream read_auth_file;
-  read_auth_file.open("auth.txt", std::ios::in); //file name
+  read_auth_file.open("./auth.txt", std::ios::in); //file name
   if (read_auth_file.is_open()) {
     while (!read_auth_file.eof()) {
       std::string line = "\n";
@@ -25,19 +23,21 @@ void AuthController::ReadUsers() {
           user(std::move(user_information[0]),
                std::move(user_information[1]),
                UserModel::ConvertStringPermissionToEnum(user_information[2]));
-      if (std::find(this->all_users_.begin(), this->all_users_.end(), user) == this->all_users_.end()) {
+      if (std::find(this->all_users_.begin(), this->all_users_.end(), user)
+          == this->all_users_.end()) {
         this->all_users_.push_back(user);
       }
     }
   } else {
-    std::ofstream new_file("auth.txt");
+    std::ofstream new_file("./auth.txt");
     new_file.close();
   }
   read_auth_file.close();
 }
 
 void AuthController::SingIn(std::string &username, std::string &password) {
-  if (!this->CheckUsername(username) || !this->CheckPassword(username, password)) {
+  if (!AuthController::CheckUsername(username)
+      || !AuthController::CheckPassword(username, password)) {
     OutputHandler::Error(ErrorType::WRONG_ARGUMENT);
     return;
   }
@@ -45,15 +45,19 @@ void AuthController::SingIn(std::string &username, std::string &password) {
   UserModel user(std::move(username), std::move(password));
   user = this->FindUser(user);
   if (!(user == *this->all_users_.end())) {
-    this->current_user_ = new UserModel(user.GetUsername(), user.GetPassword(), user.GetPermission());
+    this->current_user_ =
+        new UserModel(user.GetUsername(), user.GetPassword(), user.GetPermission());
     OutputHandler::Success(SuccessType::COMPLETE_SIGN_IN);
     return;
   }
   OutputHandler::Error(ErrorType::IS_NOT_HAS_EQUAL_USERNAME);
 }
 
-void AuthController::SingUp(std::string &username, std::string &password, std::string &confirm_password) {
-  if (!this->CheckUsername(username) || !this->CheckPassword(username, password)) {
+void AuthController::SingUp(std::string &username,
+                            std::string &password,
+                            std::string &confirm_password) {
+  if (!AuthController::CheckUsername(username)
+      || !AuthController::CheckPassword(username, password)) {
     OutputHandler::Error(ErrorType::WRONG_ARGUMENT);
     return;
   }
@@ -67,7 +71,7 @@ void AuthController::SingUp(std::string &username, std::string &password, std::s
     OutputHandler::Error(ErrorType::IS_HAS_EQUAL_USERNAME);
     return;
   }
-  std::ofstream write_auth_file("auth.txt", std::ios::app);
+  std::ofstream write_auth_file("./auth.txt", std::ios::app);
   write_auth_file << "\n" << user.GetUsername() << "\t" << user.GetPassword() << "\t"
                   << UserModel::ConvertEnumPermissionToString(user.GetPermission());
   write_auth_file.close();
@@ -84,7 +88,7 @@ void AuthController::SingOut() {
 }
 
 void AuthController::Change(std::string &username, Permission &permission) {
-  if (!this->CheckUsername(username) || permission == Permission()) {
+  if (!AuthController::CheckUsername(username) || permission == Permission()) {
     OutputHandler::Error(ErrorType::WRONG_ARGUMENT);
     return;
   }
@@ -103,10 +107,11 @@ void AuthController::Change(std::string &username, Permission &permission) {
     return;
   }
   this->all_users_[find_index].SetPermission(permission);
-  std::ofstream write_auth_file("auth.txt", std::ios::trunc);
+  std::ofstream write_auth_file("./auth.txt", std::ios::trunc);
   for (int i = 0; i < this->all_users_.size(); ++i) {
     if (i != 0) write_auth_file << std::endl;
-    write_auth_file << this->all_users_[i].GetUsername() << "\t" << this->all_users_[i].GetPassword() << "\t"
+    write_auth_file << this->all_users_[i].GetUsername() << "\t"
+                    << this->all_users_[i].GetPassword() << "\t"
                     << UserModel::ConvertEnumPermissionToString(this->all_users_[i].GetPermission());
   }
   OutputHandler::Success(SuccessType::COMPLETE_CHANGE);
@@ -120,7 +125,7 @@ UserModel AuthController::FindUser(const UserModel &user) const {
   return *std::find(this->all_users_.begin(), this->all_users_.end(), user);
 }
 
-int AuthController::FindUsernameIndex(UserModel user) const {
+int AuthController::FindUsernameIndex(const UserModel &user) const {
   for (int i = 0; i < this->all_users_.size(); ++i) {
     if (this->all_users_[i].GetUsername() == user.GetUsername()) {
       return i;
@@ -141,7 +146,8 @@ bool AuthController::CheckUsername(const std::string &username) {
 }
 
 bool AuthController::CheckPassword(const std::string &username, const std::string &password) {
-  if (password.size() >= 8 && password.size() <= 16 && password.find(username) == std::string::npos) {
+  if (password.size() >= 8 && password.size() <= 16
+      && password.find(username) == std::string::npos) {
     int count = 0;
     bool numberCheck = false;
     bool englishCheck = false;
@@ -151,7 +157,8 @@ bool AuthController::CheckPassword(const std::string &username, const std::strin
       if (!englishCheck) englishCheck = std::isalpha(password[i]);
       if (!specialCheck) {
         if ((password[i] >= 33 && password[i] <= 47) || (password[i] >= 58 && password[i] <= 64)
-            || (password[i] >= 91 && password[i] <= 96) || (password[i] > 123 && password[i] <= 126)) {
+            || (password[i] >= 91 && password[i] <= 96)
+            || (password[i] > 123 && password[i] <= 126)) {
           specialCheck = true;
         }
       }
