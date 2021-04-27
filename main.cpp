@@ -16,8 +16,8 @@ void OutputHelp() {
 
 void OutputPrint() {
   std::cout << "================ Manual ==============" << std::endl;
-  std::cout << "인증 명령어 모드(Auth)" << std::endl;
-  std::cout << "창고 명령어 모드(Warehouse)" << std::endl;
+  std::cout << "auth: 인증 명령어 모드" << std::endl;
+  std::cout << "warehouse: 창고 명령어 모드" << std::endl;
   std::cout << "======================================" << std::endl;
 }
 

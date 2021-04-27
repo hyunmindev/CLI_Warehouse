@@ -207,14 +207,14 @@ void WarehouseView::ProcessMoveSubPromptIdentifiers(std::vector<std::string> &id
 
 void WarehouseView::OutputHelp() const {
   std::cout << "================ Manual ==============" << std::endl;
-  std::cout << "receive [물품식별자] [입고할 개수]" << std::endl;
-  std::cout << "입고 명령어 입니다.(입력한 물품이 없을 시 무게와 부피도 입력 받습니다.)(직원 권한이상만 가능한 명령어 입니다.)" << std::endl;
-  std::cout << "release [물품식별자] [출고할 개수]" << std::endl;
-  std::cout << "출고 명령어 입니다." << std::endl << std::endl;
-  std::cout << "move [물품식별자] [옮길 개수]" << std::endl;
-  std::cout << "권한 변경 명령어 입니다. (직원 권한이상만 가능한 명령어 입니다.)" << std::endl;
-  std::cout << "exit" << std::endl;
-  std::cout << "모드 선택모드로 돌아가는 명령어 입니다." << std::endl;
+  std::cout << ">> receive [물품식별자] [입고할 개수]" << std::endl;
+  std::cout << "  : 입고 명령어 입니다.(입력한 물품이 없을 시 무게와 부피도 입력 받습니다.)(직원 권한이상만 가능한 명령어 입니다.)" << std::endl;
+  std::cout << ">> release [물품식별자] [출고할 개수]" << std::endl;
+  std::cout << "  : 출고 명령어 입니다." << std::endl << std::endl;
+  std::cout << ">> move [물품식별자] [옮길 개수]" << std::endl;
+  std::cout << "  : 권한 변경 명령어 입니다. (직원 권한이상만 가능한 명령어 입니다.)" << std::endl;
+  std::cout << ">> exit" << std::endl;
+  std::cout << "  : 모드 선택모드로 돌아가는 명령어 입니다." << std::endl;
   std::cout << "======================================" << std::endl;
 }
 

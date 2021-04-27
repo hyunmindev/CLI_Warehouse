@@ -39,35 +39,26 @@ void AuthView::ProcessInputs(const std::vector<std::string> &inputs) {
     std::string password = arguments.at(1);
     this->ProcessSignIn(username, password);
   } else if (command == "signup") {
-    if (!
-        View::CheckArguments(arguments,
-                             3, 4)) {
+    if (!View::CheckArguments(arguments,3, 4)) {
       return;
     }
     std::string username = arguments.at(0);
     std::string password = arguments.at(1);
     std::string confirm_password = arguments.at(2);
-    this->
-        ProcessSignUp(username, password, confirm_password
+    this->ProcessSignUp(username, password, confirm_password
     );
   } else if (command == "signout") {
-    if (!
-        View::CheckArguments(arguments,
-                             0, 1)) {
+    if (!View::CheckArguments(arguments,0, 1)) {
       return;
     }
-    this->
-        ProcessSignOut();
+    this->ProcessSignOut();
   } else if (command == "change") {
-    if (!
-        View::CheckArguments(arguments,
-                             2, 3)) {
+    if (!View::CheckArguments(arguments,2, 3)) {
       return;
     }
     std::string username = arguments.at(0);
     std::string permission_string = arguments.at(1);
-    this->
-        ProcessChange(username, UserModel::ConvertStringPermissionToEnum(permission_string)
+    this->ProcessChange(username, UserModel::ConvertStringPermissionToEnum(permission_string)
     );
   } else {
     OutputHandler::Error(ErrorType::WRONG_COMMAND, command
@@ -143,13 +134,13 @@ void AuthView::ProcessPrint(const std::string &argument) const {
 
 void AuthView::OutputHelp() const {
   std::cout << "================ Manual ==============" << std::endl;
-  std::cout << "signin [username] [password]" << std::endl;
+  std::cout << ">> signin [username] [password]" << std::endl;
   std::cout << "  : 로그인 명령어 입니다." << std::endl << std::endl;
-  std::cout << "signup [username] [password] [confirm password]" << std::endl;
+  std::cout << ">> signup [username] [password] [confirm password]" << std::endl;
   std::cout << "  : 회원가입 명령어 입니다." << std::endl << std::endl;
-  std::cout << "change [username] [password] [confirm password]" << std::endl;
+  std::cout << ">> change [username] [permission]" << std::endl;
   std::cout << "  : 권한 변경 명령어 입니다. (관리자 권한만 사용가능합니다.)" << std::endl;
-  std::cout << "exit" << std::endl;
+  std::cout << ">> exit" << std::endl;
   std::cout << "  : 모드 선택모드로 돌아가는 명령어 입니다." << std::endl;
   std::cout << "======================================" << std::endl;
 }
